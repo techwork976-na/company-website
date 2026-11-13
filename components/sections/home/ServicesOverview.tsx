@@ -1,91 +1,155 @@
-import { ArrowRight, Check } from "lucide-react";
+"use client";
+
+import { AnimatePresence } from "framer-motion";
+import * as m from "framer-motion/m";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { home, serviceCategories, type ServiceCategory } from "@/content/site";
-import { motion } from "@/lib/tokens";
+import { useState } from "react";
+import { home } from "@/content/site";
+import { services } from "@/content/services";
+import { cn } from "@/lib/cn";
+import { serviceColors, serviceIcons } from "@/lib/service-style";
+import { MaskedText } from "@/components/motion/MaskedText";
 import { Reveal } from "@/components/motion/Reveal";
-import { SplitHeading } from "@/components/motion/SplitHeading";
-import AnimatedContent from "@/components/reactbits/AnimatedContent";
-import SpotlightCard from "@/components/reactbits/SpotlightCard";
-import { ArrowLink } from "@/components/ui/ArrowLink";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-import { ServiceIcon } from "@/components/ui/ServiceIcon";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import { ButtonLink } from "@/components/ui/Button";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 
-function ServiceCard({ category, linkLabel }: { category: ServiceCategory; linkLabel: string }) {
-  return (
-    <SpotlightCard
-      theme="light"
-      intensity={1}
-      spotlightSize={320}
-      borderGlow={1}
-      className="group flex h-full flex-col p-6 transition-[box-shadow,translate] duration-[var(--dur-base)] ease-brand hover:-translate-y-0.5 hover:shadow-card has-[a:focus-visible]:shadow-card sm:p-8"
-    >
-      <div className="flex items-center justify-between">
-        <span className="flex size-11 items-center justify-center rounded-ui bg-surface text-ink">
-          <ServiceIcon name={category.icon} className="size-5" />
-        </span>
-        <span className="numeral text-[0.875rem] text-ink-soft">{category.index}</span>
-      </div>
-
-      <h3 className="mt-8 text-h3 text-ink">{category.title}</h3>
-      <p className="mt-3 max-w-[26rem] text-ink2">{category.summary}</p>
-
-      <ul className="mt-6 space-y-2.5 border-t border-line pt-6">
-        {category.highlights.map((name) => (
-          <li key={name} className="flex items-center gap-2.5 text-ink2">
-            <Check aria-hidden="true" strokeWidth={2} className="size-4 shrink-0 text-ink-soft" />
-            {name}
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-auto pt-8">
-        <Link
-          href={`/services#${category.id}`}
-          className="inline-flex min-h-11 items-center gap-1.5 text-[0.9375rem] font-medium text-ink after:absolute after:inset-0 after:z-[2] after:rounded-card"
-        >
-          <span className="link-slide link-slide-group">{linkLabel}</span>
-          <span className="sr-only">{category.title}</span>
-          <ArrowRight
-            aria-hidden="true"
-            strokeWidth={1.75}
-            className="size-4 transition-transform duration-[var(--dur-fast)] ease-brand group-hover:translate-x-0.5"
-          />
-        </Link>
-      </div>
-    </SpotlightCard>
-  );
-}
-
+/**
+ * Services overview as an interactive index rather than a grid of cards.
+ * Hovering or focusing a service lights it up (a bar glides between rows
+ * with Framer Motion layoutId) and the colour panel beside the list swaps
+ * to that service. On small screens each row simply shows its summary.
+ */
 export function ServicesOverview() {
   const content = home.services;
+  const [active, setActive] = useState(0);
+  const service = services[active]!;
+  const colors = serviceColors[service.color];
+  const Icon = serviceIcons[service.icon];
+
   return (
-    <section aria-labelledby="services-title" className="section-y">
+    <section id="services" data-tone="indigo" aria-labelledby="services-title" className="section-y relative">
       <div className="container-wide">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-7">
-            <SectionLabel index={content.index}>{content.label}</SectionLabel>
-            <SplitHeading id="services-title" lines={content.title} className="mt-5 text-h2 text-ink" />
+            <Eyebrow>{content.eyebrow}</Eyebrow>
+            <MaskedText id="services-title" lines={content.title} className="mt-6 text-h2 text-fg" />
           </div>
-          <Reveal className="lg:col-span-4 lg:col-start-9 lg:self-end" delay={80}>
-            <p className="text-lead text-ink2">{content.intro}</p>
-            <ArrowLink href={content.link.href} className="mt-3 text-ink">
-              {content.link.label}
-            </ArrowLink>
+          <Reveal className="lg:col-span-4 lg:col-start-9" delay={120}>
+            <p className="text-lead text-fg-soft">{content.description}</p>
           </Reveal>
         </div>
 
-        {/* Cards rise in one after another (React Bits AnimatedContent). */}
-        <AnimatedContent
-          distance={16}
-          duration={motion.duration.reveal}
-          stagger={0.06}
-          threshold={0.15}
-          className="mt-10 grid grid-cols-1 gap-4 md:gap-5 lg:mt-14 lg:grid-cols-3"
-        >
-          {serviceCategories.map((category) => (
-            <ServiceCard key={category.id} category={category} linkLabel={content.cardLink} />
-          ))}
-        </AnimatedContent>
+        <div className="mt-14 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-12">
+          <Stagger as="ol" stagger={50} className="border-t border-line lg:col-span-7">
+            {services.map((item, index) => {
+              const lit = index === active;
+              const itemColors = serviceColors[item.color];
+              return (
+                <StaggerItem as="li" key={item.slug} index={index} className="relative border-b border-line">
+                  {lit ? (
+                    <m.span
+                      layoutId="service-indicator"
+                      aria-hidden="true"
+                      className="absolute top-0 -bottom-px left-0 hidden w-1 bg-accent lg:block"
+                    />
+                  ) : null}
+                  <Link
+                    href={`/services/${item.slug}`}
+                    onMouseEnter={() => setActive(index)}
+                    onFocus={() => setActive(index)}
+                    className="group grid grid-cols-[2.5rem_1fr_auto] items-start gap-x-3 py-6 md:grid-cols-[3.5rem_1fr_auto] md:py-7 lg:items-center lg:pl-7"
+                  >
+                    <span
+                      className={cn(
+                        "numeral pt-1.5 text-small transition-colors duration-[var(--dur-base)] lg:pt-0",
+                        lit ? "lg:text-accent" : "text-fg-soft",
+                      )}
+                    >
+                      {item.index}
+                    </span>
+                    <span>
+                      <span
+                        className={cn(
+                          "block font-display text-[clamp(1.5rem,1.1rem+1.6vw,2.5rem)] leading-[1.05] font-bold tracking-[-0.035em] transition-colors duration-[var(--dur-base)] ease-brand",
+                          lit ? "lg:text-accent" : "lg:text-fg",
+                        )}
+                      >
+                        {item.title}
+                      </span>
+                      <span className="mt-2 block max-w-[30rem] text-fg-soft lg:hidden">{item.summary}</span>
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "mt-1 flex size-10 items-center justify-center rounded-full border border-line-strong transition-[background-color,border-color,color,rotate] duration-[var(--dur-slow)] ease-brand lg:mt-0",
+                        lit && `lg:rotate-45 lg:border-transparent ${itemColors.bg} ${itemColors.fg}`,
+                      )}
+                    >
+                      <ArrowUpRight strokeWidth={2} className="size-[1.125rem]" />
+                    </span>
+                  </Link>
+                </StaggerItem>
+              );
+            })}
+          </Stagger>
+
+          {/* Visual companion to the list; the list itself carries all the content. */}
+          <div aria-hidden="true" className="hidden lg:col-span-5 lg:block">
+            <div className="sticky top-[calc(var(--nav-h)+2rem)]">
+              <div
+                className={cn(
+                  "relative aspect-[4/5] overflow-hidden rounded-panel transition-colors duration-[var(--dur-slow)] ease-brand",
+                  colors.bg,
+                  colors.fg,
+                )}
+              >
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <m.div
+                    key={service.slug}
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -16 }}
+                    transition={{ duration: 0.36 }}
+                    className="absolute inset-0 flex flex-col p-9 xl:p-10"
+                  >
+                    <div className="flex items-start justify-between">
+                      <span className="numeral text-small font-semibold">
+                        {service.index} / {String(services.length).padStart(2, "0")}
+                      </span>
+                      <span className="flex size-14 items-center justify-center rounded-2xl bg-ink text-white">
+                        <Icon strokeWidth={1.75} className="size-7" />
+                      </span>
+                    </div>
+                    <Icon strokeWidth={0.6} className="absolute -right-10 -bottom-10 size-[22rem] opacity-[0.16]" />
+                    <div className="relative mt-auto">
+                      <p className="font-display text-[2.5rem] leading-[1] font-bold tracking-[-0.04em] xl:text-[2.875rem]">
+                        {service.title}
+                      </p>
+                      <p className="mt-4 max-w-[24rem] text-lead opacity-90">{service.summary}</p>
+                      <p className="eyebrow mt-8 opacity-75">{content.includesLabel}</p>
+                      <ul className="mt-3 flex flex-wrap gap-2">
+                        {service.offerings.slice(0, 4).map((offering) => (
+                          <li
+                            key={offering.title}
+                            className="rounded-full border border-current/30 px-3.5 py-1.5 text-small font-semibold"
+                          >
+                            {offering.title}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </m.div>
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Reveal className="mt-12 lg:mt-16">
+          <ButtonLink href={content.cta.href}>{content.cta.label}</ButtonLink>
+        </Reveal>
       </div>
     </section>
   );

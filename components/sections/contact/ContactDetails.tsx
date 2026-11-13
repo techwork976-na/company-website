@@ -1,65 +1,83 @@
-import { Clock, Mail, Timer } from "lucide-react";
+import { ArrowUpRight, Clock, Mail, MapPin } from "lucide-react";
 import type { ReactNode } from "react";
 import { contactPage, site } from "@/content/site";
-import { mailtoUrl, whatsappUrl } from "@/lib/site-url";
-import { buttonClasses } from "@/components/ui/Button";
+import { mailtoUrl } from "@/lib/site-url";
 
-function WhatsAppIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="size-[1.125rem] shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3.5 20.5l1.3-4.1A8.5 8.5 0 1 1 8 19.4z" />
-      <path d="M9 8.6c.2-.5.6-.6.9-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.7l-.5.6c.6 1.2 1.6 2.2 2.8 2.8l.6-.5c.2-.1.5-.2.7-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.7-.6.9-.8.4-1.8.4-3-.1a9.3 9.3 0 0 1-4.7-4.7c-.5-1.2-.5-2.2-.1-3z" />
-    </svg>
-  );
-}
-
-/* A <dl> group may only contain <dt> and <dd>, so the icon lives inside the <dt>. */
 function Detail({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
   return (
-    <div className="relative min-h-10 pl-14">
-      <dt className="eyebrow text-ink-soft">
-        <span
-          aria-hidden="true"
-          className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-ui border border-line bg-bg text-ink"
-        >
-          {icon}
-        </span>
-        {label}
-      </dt>
-      <dd className="mt-0.5 text-ink">{children}</dd>
+    <div className="flex gap-4 border-t border-line py-5 first:border-t-0 first:pt-0">
+      <span
+        aria-hidden="true"
+        className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-on-accent"
+      >
+        {icon}
+      </span>
+      <div className="min-w-0">
+        <dt className="eyebrow text-fg-soft">{label}</dt>
+        <dd className="mt-1 text-fg">{children}</dd>
+      </div>
     </div>
   );
 }
 
-/** Direct contact options shown beside the form (below it on mobile). */
+/** Direct contact options, social links and what happens after a message. */
 export function ContactDetails() {
   return (
-    <div className="rounded-card border border-line bg-surface p-6 sm:p-7 lg:sticky lg:top-[calc(var(--nav-h)+1.5rem)]">
-      <h2 className="text-title text-ink">{contactPage.detailsTitle}</h2>
-      <dl className="mt-6 space-y-5">
-        <Detail icon={<Mail strokeWidth={1.5} className="size-[1.125rem]" />} label={contactPage.emailLabel}>
-          <a href={mailtoUrl()} className="link-slide inline-flex min-h-11 items-center font-medium [overflow-wrap:anywhere]">
-            {site.contact.email}
-          </a>
-        </Detail>
-        <Detail icon={<Clock strokeWidth={1.5} className="size-[1.125rem]" />} label={contactPage.hoursLabel}>
-          {site.contact.hours}
-        </Detail>
-        <Detail icon={<Timer strokeWidth={1.5} className="size-[1.125rem]" />} label={contactPage.responseLabel}>
-          {site.contact.responseTime}
-        </Detail>
-      </dl>
-      <div className="mt-6 border-t border-line pt-6">
-        <a
-          href={whatsappUrl()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={buttonClasses("dark", "fluid", "w-full")}
-        >
-          <WhatsAppIcon />
-          <span>{contactPage.whatsappButton}</span>
-        </a>
-        <p className="numeral mt-3 text-center text-[0.875rem] text-ink-soft">{site.contact.whatsappDisplay}</p>
+    <div className="space-y-6 lg:sticky lg:top-[calc(var(--nav-h)+1.5rem)]">
+      <div data-tone-fixed="indigo" className="rounded-panel p-7 sm:p-8">
+        <h2 className="font-display text-title font-bold">{contactPage.detailsTitle}</h2>
+        <dl className="mt-6">
+          <Detail icon={<Mail strokeWidth={1.75} className="size-[1.125rem]" />} label={contactPage.emailLabel}>
+            <a
+              href={mailtoUrl()}
+              className="link-slide inline-flex min-h-10 items-center text-title font-semibold [overflow-wrap:anywhere]"
+            >
+              {site.contact.email}
+            </a>
+          </Detail>
+          <Detail icon={<MapPin strokeWidth={1.75} className="size-[1.125rem]" />} label={contactPage.locationLabel}>
+            {site.contact.location}
+          </Detail>
+          <Detail icon={<Clock strokeWidth={1.75} className="size-[1.125rem]" />} label={contactPage.responseLabel}>
+            {site.contact.responseTime}
+          </Detail>
+        </dl>
+        <div className="mt-2 border-t border-line pt-6">
+          <p className="eyebrow text-fg-soft">{contactPage.followLabel}</p>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {site.socials.map((social) => (
+              <li key={social.label}>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex h-10 items-center gap-1.5 rounded-full border border-line-strong px-4 text-small font-semibold transition-colors duration-[var(--dur-fast)] ease-brand hover:border-accent hover:bg-accent hover:text-on-accent"
+                >
+                  {social.label}
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    strokeWidth={2}
+                    className="size-3.5 transition-transform duration-[var(--dur-slow)] ease-brand group-hover:rotate-45"
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="rounded-panel bg-raise p-7 sm:p-8">
+        <h2 className="font-display text-title font-bold text-fg">{contactPage.nextTitle}</h2>
+        <ol className="mt-5 space-y-4">
+          {contactPage.nextSteps.map((step, index) => (
+            <li key={step} className="flex gap-4">
+              <span className="numeral flex size-7 shrink-0 items-center justify-center rounded-full bg-fg text-[0.75rem] font-semibold text-canvas">
+                {index + 1}
+              </span>
+              <span className="pt-0.5 text-fg-soft">{step}</span>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   );

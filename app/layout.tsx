@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import { site } from "@/content/site";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { RevealManager } from "@/components/motion/RevealManager";
+import { ToneManager } from "@/components/motion/ToneManager";
 import { jsonLdScript, organizationJsonLd } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 import { palette } from "@/lib/tokens";
@@ -14,6 +15,12 @@ import "./globals.css";
 const sans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
+  display: "swap",
+});
+
+const display = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-bricolage",
   display: "swap",
 });
 
@@ -46,14 +53,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: palette.bg,
+  themeColor: palette.paper,
   colorScheme: "light",
   viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${display.variable} ${mono.variable}`} suppressHydrationWarning>
       <body>
         <MotionProvider>
           <SkipLink />
@@ -64,10 +71,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SiteFooter />
         </MotionProvider>
         <RevealManager />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: jsonLdScript(organizationJsonLd()) }}
-        />
+        <ToneManager />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(organizationJsonLd()) }} />
       </body>
     </html>
   );

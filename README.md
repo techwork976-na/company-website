@@ -1,10 +1,10 @@
-# Betteflow website
+# NOVARY® website
 
-Marketing website for Betteflow, a software agency that builds software, AI automation and websites for businesses.
+Marketing website for **NOVARY®**, a demo tech agency brand that builds software, AI agents, business automation, websites and mobile apps.
 
-Four pages: Home (`/`), Services (`/services`), Work (`/work` and `/work/[slug]`) and Contact (`/contact`), plus a custom 404.
+Three main pages in the navigation: **Home** (`/`), **Services** (`/services`, with a detail page per service at `/services/[slug]`) and **Contact** (`/contact`). Featured projects open their own pages at `/projects/[slug]`, and there is a custom 404.
 
-**Stack:** Next.js 16 (App Router, Cache Components, Turbopack), React 19, TypeScript (strict), Tailwind CSS 4, Framer Motion (sliding pills and grid reflow), GSAP ScrollTrigger (process track), Lucide icons, clsx + tailwind-merge (class names), Resend (email), zod (validation).
+**Stack:** Next.js 16 (App Router, Cache Components, Turbopack), React 19, TypeScript (strict), Tailwind CSS 4, Framer Motion, GSAP ScrollTrigger, Lucide icons, simple-icons (technology logos), clsx + tailwind-merge, Resend (email), zod (validation).
 
 ---
 
@@ -18,8 +18,6 @@ cp .env.example .env.local   # then fill in the values
 npm run dev                  # http://localhost:3000
 ```
 
-### Scripts
-
 | Script              | What it does                                              |
 | ------------------- | --------------------------------------------------------- |
 | `npm run dev`       | Development server with hot reload                        |
@@ -31,105 +29,99 @@ npm run dev                  # http://localhost:3000
 
 ### Environment variables
 
-| Variable               | Required | Purpose                                                                                     |
-| ---------------------- | -------- | ------------------------------------------------------------------------------------------- |
-| `RESEND_API_KEY`       | Yes      | Resend API key used to send the contact emails                                              |
-| `CONTACT_TO_EMAIL`     | Yes      | Inbox that receives new enquiries                                                           |
-| `CONTACT_FROM_EMAIL`   | Yes      | Sender for both emails, on a domain verified in Resend, e.g. `Betteflow <hello@betteflow.com>` |
-| `NEXT_PUBLIC_SITE_URL` | Yes      | Public URL without trailing slash, used for canonical URLs, sitemap, robots and social images |
+| Variable               | Required | Purpose                                                                    |
+| ---------------------- | -------- | -------------------------------------------------------------------------- |
+| `RESEND_API_KEY`       | Yes      | Resend API key used to send the contact emails                             |
+| `CONTACT_TO_EMAIL`     | Yes      | Inbox that receives new enquiries                                          |
+| `CONTACT_FROM_EMAIL`   | Yes      | Sender for both emails, on a domain verified in Resend                     |
+| `NEXT_PUBLIC_SITE_URL` | Yes      | Public URL without trailing slash (canonical URLs, sitemap, social images) |
 
-Without the three email variables the site still works: the form validates as normal, and on submit it shows a clear "email is not set up yet" message in development (a generic message with your email address in production). Nothing crashes.
+Without the email variables the form still validates; on submit it explains that email is not set up yet (development) or shows a generic message with the email address (production).
 
 ---
 
 ## Before you launch
 
-Everything below is placeholder content. All of it lives in `content/site.ts` and `content/projects.ts` unless noted.
+NOVARY® is a demo brand. Replace these placeholders, all in `content/` unless noted:
 
-1. **Domain:** set `NEXT_PUBLIC_SITE_URL` (and `site.url` in `content/site.ts` as a fallback).
-2. **Email address:** `site.contact.email`.
-3. **WhatsApp number:** `site.contact.whatsappNumber` (digits only, with country code) and `site.contact.whatsappDisplay`.
-4. **Working hours:** `site.contact.hours`.
-5. **Stats:** `home.stats.items`. Replace the numbers with real ones, then set `home.stats.placeholder` to `false` to remove the "Sample figures" note.
-6. **Projects:** replace the three sample projects in `content/projects.ts` and set `placeholder: false` on each real one. Sample projects show a "Sample" tag, carry a note on their page and are kept out of search engines (`noindex`, not in the sitemap) until you do.
-7. **Logo:** the mark is drawn in code. Replace `BMark` and `Logo` in `components/ui/Logo.tsx`, plus `app/icon.svg`, `app/favicon.ico`, `app/apple-icon.tsx` and `public/logo.png`.
-8. **Open Graph image:** generated from the hero headline by `lib/og.tsx` (using the Geist font files in `assets/fonts/`). Edit it there, or replace `app/opengraph-image.tsx` and `app/twitter-image.tsx` with static `opengraph-image.png` / `twitter-image.png` files (1200 x 630).
-9. **Social profiles (optional):** add URLs to `site.sameAs` for search engines.
+1. **Domain:** `NEXT_PUBLIC_SITE_URL` (and `site.url` in `content/site.ts`).
+2. **Email and location:** `site.contact`.
+3. **Social profiles:** `site.socials` currently point to the platforms' home pages.
+4. **Client brands:** `home.clients.brands` are invented names; their marks are drawn in `components/ui/BrandMark.tsx`.
+5. **Reviews:** `home.reviews.items` are demo reviews, labelled as such on the page. Replace them with real ones (and only ever show genuine reviews).
+6. **Projects:** `content/projects.ts` holds six demo concepts. Their pages are `noindex` and stay out of the sitemap.
+7. **Mockup figures:** numbers inside the coded mockups (`components/mockups/`) are illustrative.
+8. **Logo:** the N mark is in `components/ui/Logo.tsx`, `app/icon.svg`, `app/apple-icon.tsx`, `app/favicon.ico` and `public/logo.png`.
 
 ---
 
 ## Editing content
 
-All copy, labels, contact details and numbers are in **`content/site.ts`**. Components never hard-code text, so you can change wording without touching layout code.
+All copy lives in **`content/`**; components never hard-code text.
 
-- Home sections: `home.hero`, `home.stats`, `home.marquee`, `home.services`, `home.work`, `home.process`, `home.finalCta`
-- Services and their cards: `serviceCategories` (each category has an `id` used in `/services#id` and `/contact?service=id`)
-- Page copy: `servicesPage`, `workPage`, `projectPage`, `contactPage`, `notFoundPage`, `footer`
-- Headlines are arrays: **each entry is one line** of the masked line reveal, so you control the line breaks.
-
-Service icons are Lucide icons, referenced by name in `content/site.ts` and mapped in `components/ui/ServiceIcon.tsx`.
-
-## Adding a project
-
-1. Open `content/projects.ts` and copy an existing entry.
-2. Give it a unique `slug` (used in the URL `/work/your-slug`), a `name`, a `category` (`software`, `ai` or `web`) and the text fields (`summary`, `result`, `scope`, `year`, `problem`, `built`, `outcome`).
-3. Add an image: put it in `public/work/` and set `image: { src: "/work/your-image.jpg", alt: "...", width: 1600, height: 1200 }`. Without an image, pick a designed artwork with `visual: "ledger" | "signal" | "storefront"`.
-4. Set `placeholder: false`.
-
-The project gets its own page, Open Graph image, sitemap entry and a place in the Work grid and filters automatically. The first three projects appear on the home page.
+- `content/site.ts`: brand, navigation, every home section (`home.hero`, `home.clients`, `home.about`, `home.services`, `home.why`, `home.process`, `home.projects`, `home.tech`, `home.reviews`, `home.finalCta`), services page copy, contact page, footer and 404.
+- `content/services.ts`: the eight services, including the detail-view copy (offerings, delivery steps, stack, deliverables, fit, timeline). The `slug` is used in `/services/[slug]` and `/contact?service=[slug]`.
+- `content/projects.ts`: the six featured projects; `visual` picks the coded mockup and `stage` the panel colour.
+- Headlines are arrays: **each entry is one line** of the heading, so the line breaks are designed.
+- Technology logos come from `simple-icons` and are mapped in `lib/tech-icons.tsx`; tools without a logo there get a typographic monogram.
 
 ---
 
 ## How it is built
 
 ```
-app/                    routes, metadata files (sitemap, robots, icons, OG images), API route
-  api/contact/route.ts  contact form endpoint (validation, spam protection, Resend)
+app/                     routes, metadata (sitemap, robots, icons, OG images), contact API
+  services/[slug]/       service detail view
+  projects/[slug]/       project page
 components/
-  layout/               header, mobile menu, footer, skip link, back to top
-  motion/               Reveal, Stagger, MaskedText, CountUp, Marquee, PageTransition,
-                        RevealManager, MotionProvider (Framer Motion settings)
-  sections/             page sections (home, services, work, contact)
-  ui/                   buttons, links, labels, tags, logo, icons, project artwork
-content/                all editable text, numbers and project data
-lib/                    tokens, class-name helper, easing, scroll helpers, SEO, email, validation, rate limit
-assets/fonts/           font files used only to draw Open Graph images (SIL Open Font License)
+  layout/                header, mobile menu, footer, skip link, back to top
+  mockups/               coded product visuals (WhatsApp inbox, voice agent, dashboard,
+                         storefront, mobile app, workflow canvas)
+  motion/                ToneManager, RevealManager, Reveal, Stagger, MaskedText,
+                         PageTransition, MotionProvider
+  sections/              page sections (home, contact)
+  ui/                    Button, ArrowLink, Eyebrow, Logo, BrandMark
+content/                 all editable text and data
+lib/                     tokens, class helper, lazy GSAP hook, service/project styles,
+                         tech icons, SEO, email, validation, rate limit
 ```
+
+### The continuous journey
+
+The site is one canvas whose colour shifts as you scroll, so sections flow into each other instead of sitting in boxes. Each section declares a tone (`data-tone="paper" | "lilac" | "indigo" | "violet"`). `components/motion/ToneManager.tsx` watches a line across the middle of the viewport and sets the tone on `<html>`; the tone colours are registered CSS properties (`@property --c-bg`, `--c-fg`...) that cross-fade in 0.7s. Components use them as Tailwind colours: `bg-canvas`, `text-fg`, `text-fg-soft`, `border-line`, `bg-accent`, `text-on-accent`, `bg-raise`. Without JavaScript every section simply paints its own tone.
+
+Home page sequence: paper (hero, clients) → indigo (about, services) → lilac (why us) → paper (process) → indigo (projects) → paper (technology) → lilac (reviews) → violet (call to action) → deep indigo footer.
 
 ### Design tokens
 
-Colours, type scale, radii, shadows and easing are defined once in `app/globals.css` (`@theme`) and used as Tailwind classes (`bg-surface`, `text-ink`, `text-h2`, `rounded-card`, `shadow-card`, `ease-brand`...). `lib/tokens.ts` mirrors the palette and motion timings for generated images and JavaScript.
+Defined once in `app/globals.css` (`@theme`) and mirrored in `lib/tokens.ts` for generated images and emails.
 
-- **Palette:** white `bg`, ivory `surface`, warm beige `muted`, Jet Black `ink`, charcoal `ink2`, Champagne Gold `accent`. Lines and quiet text are derived from these at low opacity. Gold is kept for the main button, the dot in section labels and the process track.
-- **Type:** Geist for everything, Geist Mono (`numeral` class) for index numbers and technical details. Sizes are fluid: `text-display`, `text-h1` to `text-h3`, `text-title`, `text-lead`, `text-body`, `text-label`.
-- **Shape and depth:** `rounded-ui` (10px) for fields, `rounded-card` (16px), `rounded-panel` (24px), pill buttons. Elevation is one soft neutral shadow (`shadow-card`) that appears on hover.
-- **Class names:** always build conditional classes with `cn()` from `lib/cn.ts`. It uses clsx and tailwind-merge, so a later class cleanly overrides an earlier one. If you add a new text size, radius or shadow token, add its name to the list in `lib/cn.ts` too.
+- **Palette:** paper `#F4EFE6`, lilac `#E7E1FF`, ink `#16123F`, indigo `#1B1650`, violet `#5B3DF5`, coral `#FF6B4A`, lime `#D4F36A`, plus sun, sky, rose, emerald and periwinkle as service and project accents. Flat colour only: no gradients, glass, blur or gloss.
+- **Type:** Bricolage Grotesque for display, Geist for text, Geist Mono for numbers. Fluid sizes: `text-display`, `text-h1`–`text-h3`, `text-title`, `text-lead`, `text-body`, `text-small`, `text-label`.
+- **Class names:** build conditional classes with `cn()` from `lib/cn.ts`; register new text, radius or shadow tokens there too.
 
 ### Motion
 
-Motion is quick and quiet: **nothing runs longer than 0.4s**, with one easing everywhere (`cubic-bezier(0.22, 1, 0.36, 1)`). Timings are CSS variables in `:root` (`--dur-fast` 150ms for hover and press, `--dur-base` 220ms for UI state, `--dur-slow` 320ms, `--dur-reveal` 400ms) and mirrored in `lib/tokens.ts`. Scrolling is native.
+Smooth and controlled, one easing everywhere (`cubic-bezier(0.22, 1, 0.36, 1)`).
 
-- **Reveals** (`Reveal`, `Stagger`, `MaskedText`) render plain HTML with data attributes on the server. A single `IntersectionObserver` in `RevealManager` marks each element once, and CSS transitions do the motion. Content already on screen at load is never hidden, so first paint and LCP never wait for JavaScript; without JavaScript nothing is hidden at all.
-- **Hero and page headers** are pure CSS animations; the whole entrance finishes in under a second.
-- **Framer Motion** is used only where it is the best tool: the pill that slides between navbar links, service tabs and work filters (`layoutId`), and the work grid gliding into place when filtered (`layout` + `AnimatePresence`). `MotionProvider` loads its code lazily after the page is interactive and sets the shared defaults.
-- **GSAP ScrollTrigger** drives one thing: the gold line that fills along the process track as you scroll. It is downloaded only when that section approaches the viewport.
-- **Page transitions** use React's `<ViewTransition>` with the browser View Transitions API: a short fade and 8px rise, the navbar anchored, and the project image morphing from the Work grid into the project page. Browsers without support swap pages instantly.
-- `prefers-reduced-motion` turns off the marquee, the process scrubbing, hero parallax, count-ups and all movement, leaving 160ms opacity fades.
+- **Reveals** (`Reveal`, `Stagger`, `MaskedText`) render on the server with data attributes; a single `IntersectionObserver` in `RevealManager` reveals each once with CSS transitions. Content already on screen is never hidden.
+- **Hero:** pure CSS entrance; the isometric blocks (`IsoBlocks.tsx`, flat-shaded SVG with a true isometric projection) drop into place and two modules drift gently.
+- **Client dial:** a huge wheel of brand marks turning slowly (CSS), only its top arc visible; hover pauses it.
+- **Framer Motion:** the navbar pill and the services index indicator (`layoutId`), and the services colour panel crossfade (`AnimatePresence`). Loaded lazily by `MotionProvider`.
+- **GSAP ScrollTrigger** (downloaded only near the section, via `lib/use-lazy-gsap.ts`): the About lines drifting sideways, the process track filling and its step counter, and the project panels easing back as the next one stacks over them.
+- **Technology orbit:** three CSS rings at different speeds and directions, tiles counter-rotating to stay upright; the category list filters the orbit.
+- **Page transitions:** React `<ViewTransition>`; service titles morph from the index into the detail page.
+- `prefers-reduced-motion` turns off every continuous animation and scroll effect, leaving short fades.
 
 ### Contact form
 
-`components/sections/contact/ContactForm.tsx` and `app/api/contact/route.ts` share one zod schema (`lib/contact-schema.ts`). Spam protection: a hidden honeypot field and a minimum time-to-submit (both answer bots with a fake success), a same-origin check, a body size limit and a per-IP rate limit (5 requests per 10 minutes). All input is escaped before it goes into an email and header values are stripped of line breaks. The agency gets the enquiry (reply-to set to the visitor), and the visitor gets a confirmation; if only the confirmation fails, the enquiry still counts as sent. Without JavaScript the form still posts and the API replies with a simple HTML page.
-
-The rate limit is kept in memory, which protects one server instance. On a serverless platform each instance keeps its own count; for a strict global limit, swap `lib/rate-limit.ts` for a shared store such as Upstash Redis.
+`components/sections/contact/ContactForm.tsx` and `app/api/contact/route.ts` share one zod schema (`lib/contact-schema.ts`). Spam protection: honeypot, minimum time-to-submit, same-origin check, body size limit and a per-IP rate limit (5 requests per 10 minutes, in memory). Input is escaped before it goes into an email. Without JavaScript the form still posts and the API replies with a simple HTML page.
 
 ---
 
 ## Deploying to Vercel
 
-1. Push this folder to a Git repository (GitHub, GitLab or Bitbucket).
-2. In Vercel, choose **Add New > Project** and import the repository. The framework preset is detected as Next.js; keep the default build settings.
-3. Add the four environment variables for Production (and Preview if you want the form to work there).
-4. Deploy, then add your domain under **Settings > Domains** and update `NEXT_PUBLIC_SITE_URL` to match.
-5. In Resend, verify your sending domain (DNS records) so `CONTACT_FROM_EMAIL` can send.
-
-After deploying, submit `https://your-domain/sitemap.xml` in Google Search Console.
+1. Import the repository in Vercel (framework preset: Next.js).
+2. Add the four environment variables.
+3. Deploy, add your domain and update `NEXT_PUBLIC_SITE_URL`.
+4. Verify your sending domain in Resend.

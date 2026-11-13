@@ -1,13 +1,11 @@
 import { z } from "zod";
-import { serviceCategories, type ServiceCategoryId } from "@/content/site";
+import { serviceSlugs } from "@/content/services";
 
-export const serviceIds = serviceCategories.map((category) => category.id) as [
-  ServiceCategoryId,
-  ...ServiceCategoryId[],
-];
+/** The eight service slugs, plus "other" for anything else. */
+export const serviceIds: [string, ...string[]] = ["other", ...serviceSlugs];
 
-export function isServiceId(value: unknown): value is ServiceCategoryId {
-  return typeof value === "string" && (serviceIds as string[]).includes(value);
+export function isServiceId(value: unknown): value is string {
+  return typeof value === "string" && serviceIds.includes(value);
 }
 
 /** Shared by the form (client) and the API route (server). */

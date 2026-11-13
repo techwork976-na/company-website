@@ -1,5 +1,6 @@
 import { Resend } from "resend";
-import { serviceCategories, site } from "@/content/site";
+import { site } from "@/content/site";
+import { getService } from "@/content/services";
 import type { ContactInput } from "./contact-schema";
 import { palette } from "./tokens";
 
@@ -26,33 +27,37 @@ export function escapeHtml(value: string) {
 
 /** Removes line breaks and control characters from header values such as the subject. */
 export function headerSafe(value: string, max = 120) {
-  return value.replace(/[\u0000-\u001f\u007f]+/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
+  return value
+    .replace(/[\u0000-\u001f\u007f]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, max);
 }
 
 function serviceTitle(id: ContactInput["service"]) {
-  return serviceCategories.find((category) => category.id === id)?.title ?? id;
+  return id === "other" ? "Something else" : (getService(id)?.title ?? id);
 }
 
 function layout(content: string) {
-  return `<!doctype html><html><body style="margin:0;padding:0;background:${palette.surface};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${palette.surface};padding:32px 16px;">
+  return `<!doctype html><html><body style="margin:0;padding:0;background:${palette.paper};">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${palette.paper};padding:32px 16px;">
 <tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:${palette.bg};border:1px solid ${palette.muted};border-radius:8px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:${palette.white};border:1px solid ${palette.paperDeep};border-radius:8px;">
 <tr><td style="padding:32px;font-family:Inter,Arial,sans-serif;color:${palette.ink};font-size:16px;line-height:1.6;">
 ${content}
 </td></tr></table>
-<p style="font-family:Inter,Arial,sans-serif;font-size:13px;color:${palette.ink2};margin:16px 0 0;">${escapeHtml(site.name)}</p>
+<p style="font-family:Inter,Arial,sans-serif;font-size:13px;color:${palette.indigo};margin:16px 0 0;">${escapeHtml(site.name)}</p>
 </td></tr></table></body></html>`;
 }
 
 function row(label: string, value: string) {
-  return `<tr><td style="padding:10px 0;border-bottom:1px solid ${palette.muted};vertical-align:top;width:110px;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:${palette.ink2};">${escapeHtml(label)}</td><td style="padding:10px 0;border-bottom:1px solid ${palette.muted};vertical-align:top;">${value}</td></tr>`;
+  return `<tr><td style="padding:10px 0;border-bottom:1px solid ${palette.paperDeep};vertical-align:top;width:110px;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:${palette.indigo};">${escapeHtml(label)}</td><td style="padding:10px 0;border-bottom:1px solid ${palette.paperDeep};vertical-align:top;">${value}</td></tr>`;
 }
 
 export function enquiryEmail(input: ContactInput) {
   const message = escapeHtml(input.message).replace(/\r?\n/g, "<br>");
   const html = layout(`
-<p style="margin:0 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:${palette.ink2};">New enquiry</p>
+<p style="margin:0 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:${palette.indigo};">New enquiry</p>
 <h1 style="margin:0 0 24px;font-size:24px;line-height:1.2;font-weight:600;">${escapeHtml(input.name)}</h1>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;">
 ${row("Name", escapeHtml(input.name))}
@@ -60,7 +65,7 @@ ${row("Email", `<a href="mailto:${escapeHtml(input.email)}" style="color:${palet
 ${row("Phone", escapeHtml(input.phone || "Not given"))}
 ${row("Service", escapeHtml(serviceTitle(input.service)))}
 </table>
-<p style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:${palette.ink2};">Message</p>
+<p style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:${palette.indigo};">Message</p>
 <p style="margin:0;">${message}</p>`);
 
   const text = [
@@ -83,21 +88,21 @@ ${row("Service", escapeHtml(serviceTitle(input.service)))}
 export function confirmationEmail(input: ContactInput) {
   const firstName = input.name.split(/\s+/)[0] ?? input.name;
   const html = layout(`
-<h1 style="margin:0 0 16px;font-size:24px;line-height:1.2;font-weight:600;">Thanks, ${escapeHtml(firstName)}. We'll reply within 24 hours.</h1>
-<p style="margin:0 0 16px;">We have received your message about <strong>${escapeHtml(serviceTitle(input.service))}</strong> and will get back to you within 24 hours on working days.</p>
+<h1 style="margin:0 0 16px;font-size:24px;line-height:1.2;font-weight:600;">Thanks, ${escapeHtml(firstName)}. We'll reply within one business day.</h1>
+<p style="margin:0 0 16px;">We have received your message about <strong>${escapeHtml(serviceTitle(input.service))}</strong> and will get back to you within one business day.</p>
 <p style="margin:0;">If anything is urgent, reply to this email or write to <a href="mailto:${escapeHtml(site.contact.email)}" style="color:${palette.ink};">${escapeHtml(site.contact.email)}</a>.</p>`);
 
   const text = [
-    `Thanks, ${firstName}. We'll reply within 24 hours.`,
+    `Thanks, ${firstName}. We'll reply within one business day.`,
     "",
-    `We have received your message about ${serviceTitle(input.service)} and will get back to you within 24 hours on working days.`,
+    `We have received your message about ${serviceTitle(input.service)} and will get back to you within one business day.`,
     "",
     `If anything is urgent, reply to this email or write to ${site.contact.email}.`,
     "",
     site.name,
   ].join("\n");
 
-  return { subject: "Thanks, we'll reply within 24 hours", html, text };
+  return { subject: "Thanks, we'll reply within one business day", html, text };
 }
 
 /** Sends the enquiry to the agency, then a confirmation to the visitor. */

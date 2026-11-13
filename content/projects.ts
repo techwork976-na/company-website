@@ -1,111 +1,175 @@
-import type { ServiceCategoryId } from "./site";
-
 /**
- * Projects shown on the home page, the work page and /work/[slug].
+ * Featured projects. Titles, one-line summaries and categories come from
+ * the brand content document; the longer copy is demo content.
  *
- * To add a project: copy one entry, give it a unique `slug`, fill in the
- * text, and either add an `image` (put the file in /public/work/) or pick a
- * designed `visual` preview. Set `placeholder: false` for real work.
- * The first three projects appear on the home page.
+ * Every project is a demo concept, so its page carries a note and is kept
+ * out of search engines (see app/projects/[slug]/page.tsx).
+ * The visual is drawn in code: components/mockups/.
  */
 
-export type ProjectVisual = "automation" | "dashboard" | "pos" | "storefront";
+export type ProjectVisual = "whatsapp" | "voice" | "dashboard" | "ecommerce" | "mobile" | "workflow";
+
+/** The colour of the panel behind the mockup. */
+export type ProjectStage = "emerald" | "coral" | "violet" | "rose" | "sun" | "lime";
 
 export type Project = {
   slug: string;
-  name: string;
-  /** Short label for what it is, for example "AI automation platform". */
-  kind: string;
-  category: ServiceCategoryId;
-  /** One line for cards on the work page. */
+  index: string;
+  title: string;
+  category: string;
   summary: string;
-  /** One line result for the home page list. */
-  result: string;
-  scope: string[];
-  year: string;
-  problem: string;
-  built: string;
-  outcome: string;
-  /** Designed interface preview used when there is no image. */
+  overview: string;
+  challenge: string;
+  solution: string;
+  features: string[];
+  stack: string[];
   visual: ProjectVisual;
-  /** Optional real image, for example { src: "/work/relay.jpg", ... }. */
-  image?: { src: string; alt: string; width: number; height: number };
-  /** True while this is demo content. Shows a "Sample" tag on the site. */
-  placeholder: boolean;
+  stage: ProjectStage;
+  /** The service this project belongs to, for the contact link. */
+  service: string;
 };
 
 export const projects: Project[] = [
   {
-    slug: "relay",
-    name: "Relay",
-    kind: "AI automation platform",
-    category: "ai",
-    summary: "An AI platform that answers every enquiry, qualifies the lead and books the viewing for a property agency.",
-    result: "Every enquiry answered in seconds, with follow-ups that never get forgotten.",
-    scope: ["AI agents", "WhatsApp and email automation", "CRM integration", "n8n workflows"],
-    year: "2026",
-    problem:
-      "Enquiries arrived by WhatsApp, email and web forms at all hours. Agents replied when they could, follow-ups depended on memory, and good leads went cold overnight.",
-    built:
-      "One inbox where an AI agent replies on every channel, asks the qualifying questions, books viewings into the team calendar and writes each conversation into the CRM. Agents step in with one tap when a lead is ready.",
-    outcome:
-      "Leads get a useful answer straight away, day or night. The team starts each morning with booked viewings and a clean pipeline instead of an unread inbox.",
-    visual: "automation",
-    placeholder: true,
+    slug: "whatsapp-business-automation",
+    index: "01",
+    title: "WhatsApp Business Automation",
+    category: "Automation / Business Communication",
+    summary:
+      "A smart messaging platform designed to organize conversations, automate replies and simplify customer communication.",
+    overview:
+      "A shared WhatsApp inbox for a growing retail team. Every conversation is labelled, routed and answered quickly, with order updates and common questions handled automatically.",
+    challenge:
+      "Hundreds of daily messages arrived on one phone. Questions about prices, delivery and order status went unanswered for hours, and nobody knew who had replied to whom.",
+    solution:
+      "We built a team inbox on the WhatsApp Business API with automatic replies, quick-reply templates, smart labels and order lookups connected to the store's system.",
+    features: [
+      "Shared team inbox with assignments",
+      "Automated replies and quick templates",
+      "Order status lookups from the store",
+      "Labels, broadcasts and reply-time analytics",
+    ],
+    stack: ["WhatsApp API", "Node.js", "React", "PostgreSQL", "Redis"],
+    visual: "whatsapp",
+    stage: "emerald",
+    service: "business-automation",
   },
   {
-    slug: "ledgerline",
-    name: "Ledgerline",
-    kind: "SaaS dashboard",
-    category: "software",
-    summary: "A subscription analytics dashboard that gives a finance team one live view of revenue, churn and cash.",
-    result: "One live view of revenue replaced a week of spreadsheet reporting.",
-    scope: ["SaaS product", "Web application", "Billing integration", "Role-based access"],
-    year: "2026",
-    problem:
-      "Revenue numbers lived in billing exports, bank statements and three spreadsheets. Month-end reporting took a week, and nobody fully trusted the result.",
-    built:
-      "A multi-tenant web app that syncs with the billing provider, reconciles payments automatically and shows revenue, churn and cash on one dashboard, with drill-down to every invoice and per-role permissions.",
-    outcome:
-      "Finance closes the month from a single screen. Founders and investors read the same live numbers, and reporting is an export instead of a project.",
+    slug: "ai-voice-calling-agent",
+    index: "02",
+    title: "AI Voice Calling Agent",
+    category: "Artificial Intelligence / Voice Automation",
+    summary:
+      "An intelligent voice-based system built to handle incoming calls, answer questions and support customer interactions.",
+    overview:
+      "A voice agent that answers calls in natural language, understands what the caller needs, answers common questions, books appointments and passes complex calls to a person.",
+    challenge:
+      "A busy clinic missed calls at peak times and after hours, and front-desk staff spent most of the day answering the same questions.",
+    solution:
+      "We designed a voice agent with speech recognition, a knowledge base built from the clinic's information, calendar booking and a smooth handover to staff, with every call summarised.",
+    features: [
+      "Natural voice conversations, around the clock",
+      "Appointment booking into the calendar",
+      "Live transcript and call summary",
+      "Smart handover to a human agent",
+    ],
+    stack: ["OpenAI", "Python", "LangChain", "Twilio", "PostgreSQL"],
+    visual: "voice",
+    stage: "coral",
+    service: "ai-solutions",
+  },
+  {
+    slug: "business-management-dashboard",
+    index: "03",
+    title: "Business Management Dashboard",
+    category: "Custom Software / SaaS",
+    summary:
+      "A centralized software platform for managing operations, tracking activities and accessing business insights.",
+    overview:
+      "One platform for sales, inventory, teams and finances, with live dashboards that show managers what is happening across every branch at a glance.",
+    challenge:
+      "Data lived in spreadsheets, accounting software and chat groups. Monthly reports took days to put together and were out of date when they arrived.",
+    solution:
+      "We built a central platform with role-based access, live KPIs, branch-level reports and automated daily summaries, connected to the tools the team already used.",
+    features: [
+      "Live KPIs and revenue tracking",
+      "Branch, team and product reports",
+      "Role-based access for every department",
+      "Automated daily summaries by email",
+    ],
+    stack: ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "AWS"],
     visual: "dashboard",
-    placeholder: true,
+    stage: "violet",
+    service: "software-development",
   },
   {
-    slug: "tillpoint",
-    name: "Tillpoint",
-    kind: "Retail POS web app",
-    category: "software",
-    summary: "A browser-based point of sale with live stock across every branch of a growing retail chain.",
-    result: "Faster checkout at the till and one stock count across every branch.",
-    scope: ["POS system", "Inventory management", "Offline mode", "Sales reporting"],
-    year: "2026",
-    problem:
-      "Each branch ran its own till software and counted stock by hand. Head office saw sales a day late and could not tell which branch held what.",
-    built:
-      "A point of sale that runs in any browser, keeps selling when the internet drops and syncs sales and stock to head office the moment it reconnects. Staff learn it in one shift.",
-    outcome:
-      "Queues move faster, stock is correct in every branch, and the owner sees the day's sales from a phone before closing time.",
-    visual: "pos",
-    placeholder: true,
+    slug: "ecommerce-experience",
+    index: "04",
+    title: "E-commerce Experience",
+    category: "Web Development / E-commerce",
+    summary: "A modern online shopping platform with streamlined product discovery and a smooth checkout experience.",
+    overview:
+      "A mobile-first store for a lifestyle brand with fast search, clear product pages, saved carts and a checkout that takes under a minute.",
+    challenge:
+      "The brand sold mostly through social media. Orders were taken by hand, stock was tracked on paper and customers dropped off before paying.",
+    solution:
+      "We designed and built a store with curated collections, instant search, local payment options and cash on delivery, connected to inventory and couriers.",
+    features: [
+      "Instant search and smart filters",
+      "One-page checkout with local payments",
+      "Inventory and courier integration",
+      "Abandoned-cart reminders",
+    ],
+    stack: ["Next.js", "Shopify", "Tailwind CSS", "Stripe", "Vercel"],
+    visual: "ecommerce",
+    stage: "rose",
+    service: "ecommerce-solutions",
   },
   {
-    slug: "atelier-store",
-    name: "Atelier Store",
-    kind: "E-commerce website",
-    category: "web",
-    summary: "A fast e-commerce website for an independent furniture studio.",
-    result: "A store that loads fast and checks out in a few steps.",
-    scope: ["E-commerce website", "Payments and stock sync", "Content management"],
-    year: "2026",
-    problem:
-      "The old store was slow on mobile and hard to update. Customers dropped off long before checkout.",
-    built:
-      "A new storefront with a fast product catalogue, a short checkout, stock sync and a simple editor for new collections.",
-    outcome:
-      "Pages load quickly on any phone, and the team publishes new products without calling a developer.",
-    visual: "storefront",
-    placeholder: true,
+    slug: "mobile-business-application",
+    index: "05",
+    title: "Mobile Business Application",
+    category: "Mobile App Development",
+    summary: "A mobile-first application designed to make essential business features accessible on the go.",
+    overview:
+      "An Android and iOS app that puts sales, tasks, approvals and team updates in the pocket of every manager and field employee.",
+    challenge:
+      "Field staff had to call the office for stock levels, approvals and customer details, slowing down every visit.",
+    solution:
+      "We built a cross-platform app with offline support, instant approvals, live sales figures and push notifications, connected to the company's existing system.",
+    features: [
+      "Live sales and targets on the go",
+      "One-tap approvals and tasks",
+      "Works offline, syncs when back online",
+      "Push notifications for what matters",
+    ],
+    stack: ["Flutter", "Firebase", "Node.js", "PostgreSQL"],
+    visual: "mobile",
+    stage: "sun",
+    service: "mobile-app-development",
+  },
+  {
+    slug: "intelligent-workflow-automation",
+    index: "06",
+    title: "Intelligent Workflow Automation",
+    category: "AI / Workflow Automation",
+    summary: "A connected workflow system that automates repetitive processes and keeps business tools in sync.",
+    overview:
+      "A set of connected workflows that capture leads, classify them with AI, update the CRM, notify the team and send follow-ups, without anyone copying data by hand.",
+    challenge:
+      "Leads came from forms, WhatsApp and email. Each one was copied into the CRM by hand, and follow-ups depended on someone remembering.",
+    solution:
+      "We mapped the process and automated it end to end with n8n and AI classification, with alerts for exceptions and a simple run log for the team.",
+    features: [
+      "Leads captured from every channel",
+      "AI classification and routing",
+      "CRM, sheets and chat kept in sync",
+      "Alerts and a clear run history",
+    ],
+    stack: ["n8n", "OpenAI", "Webhooks", "REST APIs", "Google Cloud"],
+    visual: "workflow",
+    stage: "lime",
+    service: "business-automation",
   },
 ];
 
@@ -115,5 +179,5 @@ export function getProject(slug: string) {
 
 export function getNextProject(slug: string) {
   const index = projects.findIndex((project) => project.slug === slug);
-  return projects[(index + 1) % projects.length];
+  return projects[(index + 1) % projects.length]!;
 }

@@ -2,7 +2,8 @@
 
 import { Check, ChevronDown } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { contactPage, serviceCategories, site } from "@/content/site";
+import { contactPage, site } from "@/content/site";
+import { services } from "@/content/services";
 import { cn } from "@/lib/cn";
 import { contactFields, contactSchema, fieldErrors, type ContactField } from "@/lib/contact-schema";
 import { mailtoUrl } from "@/lib/site-url";
@@ -16,7 +17,7 @@ const copy = contactPage.form;
 const emptyValues = (service = ""): Values => ({ name: "", email: "", phone: "", service, message: "" });
 
 const inputClasses =
-  "block w-full rounded-ui border border-line-input bg-bg px-4 text-ink transition-[border-color,background-color] duration-[var(--dur-fast)] ease-brand placeholder:text-ink-soft hover:border-ink focus:border-ink aria-invalid:border-error";
+  "block w-full rounded-ui border-[1.5px] border-line-strong bg-raise px-4 text-fg transition-[border-color,background-color] duration-[var(--dur-fast)] ease-brand placeholder:text-fg-soft hover:border-fg focus:border-violet focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet aria-invalid:border-error";
 
 type FieldProps = {
   id: string;
@@ -29,9 +30,9 @@ type FieldProps = {
 function Field({ id, label, error, optional, children }: FieldProps) {
   return (
     <div>
-      <label htmlFor={id} className="flex items-baseline justify-between gap-4 text-[0.9375rem] font-medium text-ink">
+      <label htmlFor={id} className="flex items-baseline justify-between gap-4 text-[0.9375rem] font-semibold text-fg">
         <span>{label}</span>
-        {optional ? <span className="text-[0.875rem] font-normal text-ink-soft">{copy.optional}</span> : null}
+        {optional ? <span className="text-small font-normal text-fg-soft">{copy.optional}</span> : null}
       </label>
       <div className="mt-2">{children}</div>
       {error ? (
@@ -167,18 +168,15 @@ export function ContactForm({ initialService = "" }: { initialService?: string }
 
   if (status === "success") {
     return (
-      <div
-        ref={successRef}
-        tabIndex={-1}
-        className="form-success rounded-card border border-line bg-surface p-6 outline-none sm:p-8"
-      >
-        <span className="flex size-12 items-center justify-center rounded-full bg-ink text-surface">
+      <div ref={successRef} tabIndex={-1} className="form-success rounded-panel bg-raise p-7 outline-none sm:p-10">
+        <span className="flex size-14 items-center justify-center rounded-full bg-lime text-ink">
           <Check aria-hidden="true" strokeWidth={1.5} className="size-6" />
         </span>
-        <h2 className="mt-6 text-h3 text-ink">{copy.successTitle}</h2>
-        <p className="mt-3 max-w-[30rem] text-ink2">{copy.successText}</p>
+        <h2 className="mt-6 text-h3 text-fg">{copy.successTitle}</h2>
+        <p className="mt-3 max-w-[30rem] text-fg-soft">{copy.successText}</p>
         <Button
-          variant="secondary"
+          variant="outline"
+          arrow="none"
           className="mt-8"
           onClick={() => {
             sentRef.current = false;
@@ -283,21 +281,24 @@ export function ContactForm({ initialService = "" }: { initialService?: string }
               onBlur={() => validateOnBlur("service")}
               aria-invalid={errors.service ? true : undefined}
               aria-describedby={describedBy("service")}
-              className={cn(inputClasses, "h-12 appearance-none pr-12", !values.service && "text-ink-soft")}
+              className={cn(inputClasses, "h-12 appearance-none pr-12", !values.service && "text-fg-soft")}
             >
               <option value="" disabled>
                 {copy.servicePlaceholder}
               </option>
-              {serviceCategories.map((category) => (
-                <option key={category.id} value={category.id} className="text-ink">
-                  {category.title}
+              {services.map((service) => (
+                <option key={service.slug} value={service.slug} className="text-ink">
+                  {service.title}
                 </option>
               ))}
+              <option value="other" className="text-ink">
+                {copy.otherService}
+              </option>
             </select>
             <ChevronDown
               aria-hidden="true"
               strokeWidth={1.5}
-              className="pointer-events-none absolute top-1/2 right-4 size-5 -translate-y-1/2 text-ink"
+              className="pointer-events-none absolute top-1/2 right-4 size-5 -translate-y-1/2 text-fg"
             />
           </div>
         </Field>
@@ -327,20 +328,20 @@ export function ContactForm({ initialService = "" }: { initialService?: string }
       </div>
 
       {failure ? (
-        <div role="alert" className="field-error rounded-ui border border-error p-4">
+        <div role="alert" className="field-error rounded-ui border-[1.5px] border-error bg-raise p-4">
           <p className="font-medium text-error">{failure.title}</p>
-          {failure.text ? <p className="mt-1 text-ink2">{failure.text}</p> : null}
+          {failure.text ? <p className="mt-1 text-fg-soft">{failure.text}</p> : null}
           <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-1">
             {status === "error" ? (
               <button
                 type="button"
                 onClick={() => formRef.current?.requestSubmit()}
-                className="inline-flex min-h-11 items-center font-medium text-ink"
+                className="inline-flex min-h-11 items-center font-semibold text-fg"
               >
                 <span className="link-slide">{copy.retry}</span>
               </button>
             ) : null}
-            <a href={mailtoUrl("Project enquiry")} className="link-slide link-inline inline-flex min-h-11 items-center text-ink">
+            <a href={mailtoUrl("Project enquiry")} className="link-slide inline-flex min-h-11 items-center text-fg">
               {site.contact.email}
             </a>
           </div>
@@ -351,13 +352,13 @@ export function ContactForm({ initialService = "" }: { initialService?: string }
         <Button
           type="submit"
           aria-disabled={status === "submitting" ? true : undefined}
-          arrow={status !== "submitting"}
-          className="w-full overflow-hidden aria-disabled:cursor-progress sm:w-auto"
+          arrow={status === "submitting" ? "none" : "up-right"}
+          className="w-full justify-between overflow-hidden aria-disabled:cursor-progress sm:w-auto"
         >
           {status === "submitting" ? copy.sending : copy.submit}
           {status === "submitting" ? <span aria-hidden="true" className="sending-bar" /> : null}
         </Button>
-        <p className="text-[0.875rem] text-ink-soft">{site.contact.responseTime}</p>
+        <p className="text-small text-fg-soft">{site.contact.responseTime}</p>
       </div>
 
       <p aria-live="polite" className="sr-only">

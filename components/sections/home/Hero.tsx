@@ -1,64 +1,103 @@
-import { home, serviceCategories } from "@/content/site";
+import { Fragment } from "react";
+import { home } from "@/content/site";
 import { cssVars } from "@/lib/cn";
-import { MaskedText } from "@/components/motion/MaskedText";
 import Magnet from "@/components/reactbits/Magnet";
 import { ButtonLink } from "@/components/ui/Button";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-import { ServiceIcon } from "@/components/ui/ServiceIcon";
-import { HeroShowcase } from "./HeroShowcase";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { IsoBlocks } from "./IsoBlocks";
 
-export function Hero() {
-  const { hero } = home;
+/** Splits a line so the highlight word can be drawn in the accent colour. */
+function Line({ line, highlight }: { line: string; highlight: string }) {
+  const parts = line.split(highlight);
+  if (parts.length === 1) return <>{line}</>;
   return (
-    <section aria-labelledby="hero-title" className="relative">
-      <div className="container-wide grid grid-cols-12 gap-x-4 pt-10 pb-16 md:gap-x-6 md:pt-14 lg:min-h-[calc(100svh-var(--nav-h))] lg:content-center lg:gap-x-8 lg:py-14">
-        <div className="col-span-12 flex flex-col items-start lg:col-span-7 lg:self-center">
+    <>
+      {parts.map((part, index) => (
+        <Fragment key={index}>
+          {part}
+          {index < parts.length - 1 ? (
+            <span className="relative inline-block text-violet">
+              {highlight}
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-[0.04em] bottom-[0.04em] -z-10 h-[0.22em] rounded-[2px] bg-lime"
+              />
+            </span>
+          ) : null}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+/**
+ * Hero: one strong headline, a short promise, two actions, and the
+ * isometric building blocks. Everything enters with CSS on page load,
+ * so it never waits for JavaScript.
+ */
+export function Hero() {
+  const content = home.hero;
+  return (
+    <section data-tone="paper" aria-labelledby="hero-title" className="relative isolate overflow-hidden">
+      <div className="container-wide grid grid-cols-1 items-center gap-x-10 gap-y-12 pt-10 pb-16 md:pt-16 lg:min-h-[calc(100svh-var(--nav-h))] lg:grid-cols-12 lg:pt-8 lg:pb-20">
+        <div className="lg:col-span-8">
           <div className="hero-anim hero-rise" style={cssVars({ "--d": "0ms" })}>
-            <SectionLabel>{hero.label}</SectionLabel>
+            <Eyebrow>{content.eyebrow}</Eyebrow>
           </div>
-          {/* The headline stays pure CSS so the largest paint never waits for JavaScript. */}
-          <MaskedText
-            as="h1"
+
+          <h1
             id="hero-title"
-            trigger="load"
-            lines={hero.headline}
-            delay={40}
-            className="mt-6 text-display text-ink lg:text-[clamp(3.5rem,0.6rem+5.4vw,5.75rem)]"
-          />
+            className="mt-7 font-display text-[clamp(2.75rem,1rem+5vw,6.25rem)] leading-[0.94] font-extrabold tracking-[-0.05em] text-fg"
+          >
+            {content.title.map((line, index) => (
+              <Fragment key={line}>
+                <span className="mask-line hero-line">
+                  <span className="hero-anim" style={cssVars({ "--i": index })}>
+                    <Line line={line} highlight={content.highlight} />
+                  </span>
+                </span>
+                {index < content.title.length - 1 ? " " : null}
+              </Fragment>
+            ))}
+          </h1>
+
           <p
-            className="hero-anim hero-rise mt-6 max-w-[34rem] text-lead text-ink2 lg:mt-8"
-            style={cssVars({ "--d": "200ms" })}
+            className="hero-anim hero-rise mt-8 max-w-[34rem] text-lead text-fg-soft"
+            style={cssVars({ "--d": "320ms" })}
           >
-            {hero.subtext}
+            {content.description}
           </p>
+
           <div
-            className="hero-anim hero-rise mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
-            style={cssVars({ "--d": "260ms" })}
+            className="hero-anim hero-rise mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
+            style={cssVars({ "--d": "420ms" })}
           >
-            <Magnet padding={48} magnetStrength={7} wrapperClassName="w-full sm:w-auto" innerClassName="w-full">
-              <ButtonLink href={hero.primaryCta.href} className="w-full sm:w-auto">
-                {hero.primaryCta.label}
+            <Magnet padding={50} magnetStrength={6} wrapperClassName="w-full sm:w-auto">
+              <ButtonLink href={content.primary.href} className="w-full justify-between sm:w-auto">
+                {content.primary.label}
               </ButtonLink>
             </Magnet>
-            <ButtonLink href={hero.secondaryCta.href} variant="secondary" className="w-full sm:w-auto">
-              {hero.secondaryCta.label}
+            <ButtonLink
+              href={content.secondary.href}
+              variant="outline"
+              arrow="down"
+              className="w-full justify-between sm:w-auto"
+            >
+              {content.secondary.label}
             </ButtonLink>
           </div>
-          <ul
-            className="hero-anim hero-fade mt-10 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-5 text-[0.875rem] text-ink-soft lg:mt-12"
-            style={cssVars({ "--d": "340ms" })}
+
+          <p
+            className="hero-anim hero-fade mt-10 flex items-center gap-3 text-small font-medium text-fg-soft"
+            style={cssVars({ "--d": "560ms" })}
           >
-            {serviceCategories.map((category) => (
-              <li key={category.id} className="inline-flex items-center gap-2">
-                <ServiceIcon name={category.icon} className="size-4 text-ink" />
-                {category.title}
-              </li>
-            ))}
-          </ul>
+            <span aria-hidden="true" className="h-px w-10 bg-line-strong" />
+            {content.support}
+          </p>
         </div>
 
-        <div className="col-span-12 mt-12 sm:mx-auto sm:w-full sm:max-w-xl lg:col-span-5 lg:mx-0 lg:mt-0 lg:max-w-none lg:self-center">
-          <HeroShowcase index={hero.figure.index} caption={hero.figure.caption} />
+        <div className="mx-auto w-full max-w-[30rem] lg:col-span-4 lg:max-w-none lg:translate-x-4 xl:scale-110">
+          <IsoBlocks label={content.visualLabel} />
         </div>
       </div>
     </section>

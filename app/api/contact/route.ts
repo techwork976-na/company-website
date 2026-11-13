@@ -29,7 +29,7 @@ function htmlPage(result: Result) {
       ? contactPage.form.rateLimited
       : `Please go back and check the form, or email us at ${site.contact.email}.`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHtml(title)}</title></head>
-<body style="margin:0;font-family:system-ui,sans-serif;background:${palette.surface};color:${palette.ink};">
+<body style="margin:0;font-family:system-ui,sans-serif;background:${palette.paper};color:${palette.ink};">
 <main style="max-width:560px;margin:15vh auto;padding:0 20px;line-height:1.6;">
 <h1 style="font-size:32px;line-height:1.1;letter-spacing:-0.02em;">${escapeHtml(title)}</h1>
 <p>${escapeHtml(text)}</p>
@@ -101,9 +101,7 @@ export async function POST(request: NextRequest) {
 
   const config = getEmailConfig();
   if (!config) {
-    console.warn(
-      "Contact form: email is not configured. Set RESEND_API_KEY, CONTACT_TO_EMAIL and CONTACT_FROM_EMAIL.",
-    );
+    console.warn("Contact form: email is not configured. Set RESEND_API_KEY, CONTACT_TO_EMAIL and CONTACT_FROM_EMAIL.");
     return respond({ status: 503, body: { error: "not_configured" } }, asHtml);
   }
 

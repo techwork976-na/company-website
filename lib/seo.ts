@@ -40,13 +40,14 @@ export function organizationJsonLd() {
     logo: absoluteUrl("/logo.png"),
     email: site.contact.email,
     description: site.description,
-    sameAs: site.sameAs,
+    sameAs: site.socials.map((social) => social.href),
+    address: { "@type": "PostalAddress", addressLocality: "Karachi", addressCountry: "PK" },
     contactPoint: [
       {
         "@type": "ContactPoint",
         contactType: "sales",
         email: site.contact.email,
-        availableLanguage: ["English"],
+        availableLanguage: ["English", "Urdu"],
       },
     ],
   };

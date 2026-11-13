@@ -1,95 +1,42 @@
 /**
- * Every piece of editable text, contact detail and number on the Betteflow
- * website lives in this file. Change it here and it changes everywhere.
+ * Every piece of editable text on the NOVARY® website lives in content/.
+ * This file holds the brand, navigation, home page sections, contact page
+ * and footer. Services are in services.ts and projects in projects.ts.
  *
- * Anything marked PLACEHOLDER must be replaced before launch.
- * See README.md, section "Before you launch".
+ * NOVARY® is a demo brand: the email, social links, reviews and client
+ * names are placeholders. See README.md, "Before you launch".
  */
 
-export type ServiceCategoryId = "software" | "ai" | "web";
-
-/** Icon names map to Lucide icons in components/ui/service-icon.tsx. */
-export type ServiceIconName =
-  | "blocks"
-  | "app-window"
-  | "monitor-smartphone"
-  | "cloud"
-  | "database"
-  | "layout-grid"
-  | "bot"
-  | "mic"
-  | "message-circle"
-  | "headset"
-  | "target"
-  | "workflow"
-  | "globe"
-  | "shopping-bag"
-  | "layout-template"
-  | "store"
-  | "calendar-check"
-  | "refresh-cw";
-
-export type Service = {
-  title: string;
-  description: string;
-  icon: ServiceIconName;
-};
-
-export type ServiceCategory = {
-  id: ServiceCategoryId;
-  index: string;
-  title: string;
-  /** Short name used in the sticky tab bar, filters and the contact dropdown. */
-  shortTitle: string;
-  /** Icon shown on the home page card and in the hero. */
-  icon: ServiceIconName;
-  /** One line on the home page card. */
-  summary: string;
-  /** Intro line on the services page. */
-  intro: string;
-  /** Four service names shown on the home page card. */
-  highlights: [string, string, string, string];
-  services: Service[];
-};
-
 export const site = {
-  name: "Betteflow",
-  /** PLACEHOLDER: your production domain. NEXT_PUBLIC_SITE_URL overrides it. */
-  url: "https://betteflow.com",
-  tagline: "Software, AI and web for business",
-  title: "Betteflow | Software, AI automation and websites for business",
+  name: "NOVARY",
+  /** Shown after the name in the logo and footer. */
+  mark: "®",
+  url: "https://novary.demo",
+  tagline: "Software, AI, automation, web and mobile",
+  title: "NOVARY® | Digital solutions that move businesses forward",
   description:
-    "Betteflow is a software agency. We design and build custom software, AI automation and websites that save businesses time and help them grow.",
-  locale: "en_US",
-
-  contact: {
-    /** PLACEHOLDER: the inbox shown on the site. */
-    email: "hello@betteflow.com",
-    /** PLACEHOLDER: WhatsApp number, digits only, including the country code. */
-    whatsappNumber: "15550000000",
-    /** PLACEHOLDER: the same number, formatted for people. */
-    whatsappDisplay: "+1 555 000 0000",
-    whatsappMessage: "Hi Betteflow, I would like to talk about a project.",
-    /** PLACEHOLDER: your working hours and time zone. */
-    hours: "Monday to Friday, 9:00 to 18:00 (GMT)",
-    responseTime: "We reply within 24 hours on working days.",
-  },
-
+    "NOVARY® builds custom software, AI agents, business automation, websites and mobile apps that turn complex ideas into meaningful digital experiences.",
+  locale: "en_PK",
   nav: [
+    { label: "Home", href: "/" },
     { label: "Services", href: "/services" },
-    { label: "Work", href: "/work" },
-    { label: "Process", href: "/#process" },
     { label: "Contact", href: "/contact" },
   ],
-
-  cta: { label: "Start a project", href: "/contact" },
-
-  /** PLACEHOLDER: social profile URLs for search engines (JSON-LD). Leave empty if none. */
-  sameAs: [] as string[],
-
+  cta: { label: "Let's Talk", href: "/contact" },
+  contact: {
+    email: "hello@novary.demo",
+    location: "Karachi, Pakistan",
+    responseTime: "We reply within one business day.",
+  },
+  /** PLACEHOLDER: replace with your real profiles. */
+  socials: [
+    { label: "Instagram", href: "https://www.instagram.com/" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/" },
+    { label: "Facebook", href: "https://www.facebook.com/" },
+  ],
   ui: {
     skipLink: "Skip to content",
-    homeLabel: "Betteflow, home",
+    homeLabel: "NOVARY, home",
     mainNavLabel: "Main",
     mobileNavLabel: "Mobile",
     menuOpen: "Open menu",
@@ -100,346 +47,308 @@ export const site = {
 
 export const home = {
   hero: {
-    label: "Software, AI and web for business",
-    /** Each entry is one line of the headline (max 10 words in total). */
-    headline: ["We build", "software that", "makes business", "flow better."],
-    subtext:
-      "We design and build custom software, AI automation and websites that save your team time and help your business grow.",
-    primaryCta: { label: "Start a project", href: "/contact" },
-    secondaryCta: { label: "View our work", href: "/work" },
-    figure: { index: "Fig. 01", caption: "Software, AI and automation, working as one system" },
+    eyebrow: "Your ideas. Our expertise.",
+    /** Each entry is one line of the headline. */
+    title: ["We Build Digital", "Solutions That Move", "Businesses Forward."],
+    /** The words drawn in the accent colour. */
+    highlight: "Move",
+    description:
+      "From intelligent automation to powerful software, websites and applications — we turn complex ideas into meaningful digital experiences.",
+    primary: { label: "Start a Project", href: "/contact" },
+    secondary: { label: "Explore Our Services", href: "#services" },
+    support: "One partner. Every digital possibility.",
+    visualLabel: "Building blocks of a digital product: software, AI, automation, web and mobile.",
   },
-
-  stats: {
-    label: "Betteflow in numbers",
-    /**
-     * PLACEHOLDER: replace these numbers with your real figures, then set
-     * `placeholder` to false to remove the "sample figures" note on the site.
-     */
-    placeholder: true,
-    note: "Sample figures. Replace them in content/site.ts before launch.",
-    items: [
-      { value: 40, suffix: "+", label: "Projects delivered" },
-      { value: 6, suffix: "", label: "Years of experience" },
-      { value: 30, suffix: "+", label: "Happy clients" },
+  clients: {
+    eyebrow: "Trusted collaboration",
+    title: ["Built for Businesses", "With Big Ideas."],
+    description: "A growing network of businesses choosing smarter digital solutions.",
+    listLabel: "Businesses we work with (demo brands)",
+    brands: [
+      "Nexora",
+      "Vertex Labs",
+      "Orbit Solutions",
+      "Elevate Digital",
+      "Cloudnest",
+      "PixelCraft",
+      "Flux Technologies",
+      "Beyond Commerce",
     ],
   },
-
-  marquee: {
-    label: "What we build",
-    pauseLabel: "Pause the moving list",
-    playLabel: "Play the moving list",
-    items: [
-      "Custom software",
-      "Web applications",
-      "AI agents",
-      "Voice agents",
-      "WhatsApp automation",
-      "n8n workflows",
-      "SaaS products",
-      "CRM and ERP",
-      "E-commerce",
-      "Booking systems",
-      "Business websites",
-    ],
+  about: {
+    eyebrow: "A little about us",
+    title: ["Not Just Another", "Tech Agency."],
+    description:
+      "We bring technology, creativity and problem-solving together to build solutions that actually make a difference. Whether it's a custom software platform, an intelligent AI agent, a business automation system or a complete digital product, we're here to make it happen.",
+    support: ["Different challenges.", "One dedicated team.", "Endless possibilities."],
+    cta: { label: "Get to Know Us", href: "/contact" },
   },
-
   services: {
-    label: "Services",
-    index: "01",
-    title: ["Three disciplines.", "One accountable team."],
-    intro:
-      "Most businesses need more than a website. We build the systems behind it, automate the busywork and connect everything into one flow.",
-    link: { label: "All services", href: "/services" },
-    cardLink: "Explore",
+    eyebrow: "Our expertise",
+    title: ["Everything Digital.", "All Under One Roof."],
+    description:
+      "We don't believe in one-size-fits-all solutions. Every business has different needs, and we build around them.",
+    cta: { label: "Explore All Services", href: "/services" },
+    linkLabel: "See how we deliver",
+    includesLabel: "Includes",
   },
-
-  work: {
-    label: "Selected work",
-    index: "02",
-    title: ["Built to be used,", "every working day."],
-    link: { label: "See all work", href: "/work" },
-    previewLabel: "Preview",
+  why: {
+    eyebrow: "The difference",
+    title: ["Good Ideas Deserve", "Better Execution."],
+    description:
+      "We focus on what matters: understanding your needs, building the right solution and making technology work for your business.",
+    points: [
+      { title: "Built Around You", text: "Every solution starts with your requirements, not a predefined template." },
+      {
+        title: "One Team, Multiple Capabilities",
+        text: "Software, AI, automation, web and mobile — different expertise working together.",
+      },
+      {
+        title: "Quality Over Shortcuts",
+        text: "We care about clean execution, reliable functionality and thoughtful details.",
+      },
+      { title: "Clear Communication", text: "You stay informed, involved and confident throughout the process." },
+      { title: "Designed to Grow", text: "We build with flexibility and your future business needs in mind." },
+    ],
   },
-
   process: {
-    label: "Process",
-    index: "03",
-    title: ["A clear path from", "idea to launch."],
-    intro: "Four steps, one team, and working software in front of you every week.",
+    eyebrow: "How we work",
+    title: ["From First Conversation", "to Final Launch."],
+    stepLabel: "Step",
     steps: [
       {
         number: "01",
         title: "Discover",
-        text: "We learn how your business runs and agree on what success looks like.",
+        text: "We listen, understand your business and identify what needs to be solved.",
       },
+      { number: "02", title: "Plan", text: "We define the right approach, features, technology and project roadmap." },
+      { number: "03", title: "Design", text: "We shape the experience, structure and interface around your users." },
+      { number: "04", title: "Build", text: "Our team develops, integrates and brings the solution to life." },
+      { number: "05", title: "Launch", text: "We test, refine and deploy your solution." },
       {
-        number: "02",
-        title: "Design",
-        text: "We map the system and design every screen before we write any code.",
-      },
-      {
-        number: "03",
-        title: "Build",
-        text: "We build in short cycles and show you working software every week.",
-      },
-      {
-        number: "04",
-        title: "Launch",
-        text: "We launch, train your team and stay on to support and improve it.",
+        number: "06",
+        title: "Support & Grow",
+        text: "We remain available for improvements, maintenance and future development.",
       },
     ],
   },
-
+  projects: {
+    eyebrow: "Selected work",
+    title: ["Ideas We've Turned Into", "Digital Experiences."],
+    description: "A glimpse into the kind of solutions we create.",
+    projectLabel: "Project",
+    featuresLabel: "Key features",
+    stackLabel: "Technology",
+    viewLabel: "View Project",
+  },
+  tech: {
+    eyebrow: "Powered by the right tools",
+    title: ["The Technology Behind", "Better Solutions."],
+    description: "We bring together modern technologies and powerful platforms to build reliable digital products.",
+    allLabel: "All technologies",
+    orbitLabel: "Technology ecosystem",
+    /** ring: 1 is the inner orbit, 3 the outer one. */
+    categories: [
+      { id: "ai", label: "AI & Machine Learning", ring: 1, tools: ["OpenAI", "Python", "TensorFlow", "LangChain"] },
+      { id: "mobile", label: "Mobile", ring: 1, tools: ["Flutter", "React Native", "Kotlin", "Swift"] },
+      { id: "backend", label: "Backend", ring: 2, tools: ["Node.js", "Python", "PHP", "Laravel", "Express.js"] },
+      {
+        id: "automation",
+        label: "Automation & Integration",
+        ring: 2,
+        tools: ["n8n", "Make", "Zapier", "REST APIs", "Webhooks"],
+      },
+      { id: "design", label: "Design & Prototyping", ring: 2, tools: ["Figma", "Adobe Creative Cloud"] },
+      {
+        id: "frontend",
+        label: "Frontend",
+        ring: 3,
+        tools: ["React", "Next.js", "Vue.js", "TypeScript", "HTML", "CSS", "Tailwind CSS"],
+      },
+      {
+        id: "data",
+        label: "Databases & Infrastructure",
+        ring: 3,
+        tools: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Firebase"],
+      },
+      {
+        id: "cloud",
+        label: "Cloud & Deployment",
+        ring: 3,
+        tools: ["AWS", "Google Cloud", "Azure", "Docker", "Vercel"],
+      },
+    ],
+  },
+  reviews: {
+    eyebrow: "Words that matter",
+    title: ["Don't Just Take", "Our Word For It."],
+    description: "A few words about the experience of working with us.",
+    ratingLabel: "Client rating",
+    basedOn: (count: number) => `Based on ${count} client reviews`,
+    disclaimer: "Demo reviews for illustration. Not verified reviews from any platform.",
+    items: [
+      {
+        name: "Ahmed Raza",
+        location: "Lahore, Pakistan",
+        service: "Software Development",
+        text: "Team ne hamari requirements bohat achi tarah samjhin. Final software exactly us workflow ke according bana jo humein chahiye tha.",
+      },
+      {
+        name: "Sarah Malik",
+        location: "Karachi, Pakistan",
+        service: "Website Development",
+        text: "Communication bohat smooth thi. Website ka design aur overall experience expectations se bhi better nikla.",
+      },
+      {
+        name: "Usman Tariq",
+        location: "Islamabad, Pakistan",
+        service: "Business Automation",
+        text: "Automation solution ne hamara kaafi manual work simplify kar diya. Overall experience was great.",
+      },
+      {
+        name: "Hamza Sheikh",
+        location: "Lahore, Pakistan",
+        service: "Mobile App Development",
+        text: "Professional team, clean execution aur timely updates. Definitely a good experience working with them.",
+      },
+      {
+        name: "Ayesha Khan",
+        location: "Karachi, Pakistan",
+        service: "UI/UX & Product Design",
+        text: "Honestly, mujhe process kaafi easy laga. Team ne har stage par guide kiya aur result bohat acha tha.",
+      },
+      {
+        name: "Bilal Ahmed",
+        location: "Faisalabad, Pakistan",
+        service: "AI Voice Agent",
+        text: "AI calling solution ka concept samajhne se lekar implementation tak team ne achi support provide ki.",
+      },
+    ],
+  },
   finalCta: {
-    label: "Start a project",
-    title: ["Let's build", "something", "that works."],
-    text: "Tell us what you need. We reply within 24 hours on working days.",
-    button: { label: "Contact us", href: "/contact" },
-    emailLabel: "Or email",
+    eyebrow: "Your next big idea starts here",
+    title: ["Have Something in Mind?", "Let's Build It."],
+    description:
+      "Whether you need a simple website, a powerful software platform or an intelligent automation system, we're ready to hear about it.",
+    primary: { label: "Let's Discuss Your Project", href: "/contact" },
+    secondary: { label: "Explore Our Services", href: "/services" },
+    support: "Tell us what you're planning. We'll help you figure out the right way forward.",
   },
 } as const;
 
 export const servicesPage = {
   metaTitle: "Services",
   metaDescription:
-    "Custom software, AI agents and automation, and websites. Eighteen services across three disciplines, each built around a clear business result.",
-  label: "Services",
-  title: ["Software, AI and web.", "Built around your business."],
+    "Software development, AI agents, business automation, websites, mobile apps, e-commerce, UI/UX design and API integrations from NOVARY®.",
+  eyebrow: "Our expertise",
+  title: ["Everything Digital.", "All Under One Roof."],
   intro:
-    "Eighteen services across three disciplines. Each one starts with a clear business goal and ends with software your team actually uses.",
-  tabsLabel: "Service categories",
-  quoteLabel: "Get a quote",
+    "We don't believe in one-size-fits-all solutions. Every business has different needs, and we build around them. Choose a service to see exactly what we provide and how we deliver it.",
+  indexLabel: "Services",
+  countLabel: "8 services, one team",
+  includesLabel: "Includes",
+  openLabel: "Open",
+  processTitle: "Every engagement follows the same clear path.",
+  processLink: { label: "Start with a conversation", href: "/contact" },
 } as const;
 
-export const serviceCategories: ServiceCategory[] = [
-  {
-    id: "software",
-    index: "01",
-    title: "Software Development",
-    shortTitle: "Software",
-    icon: "blocks",
-    summary: "Custom systems that fit the way your business actually works.",
-    intro: "Systems built around your workflow, not the other way around.",
-    highlights: [
-      "Custom business software",
-      "Web applications",
-      "Desktop and mobile apps",
-      "SaaS products",
-    ],
-    services: [
-      {
-        title: "Custom Business Software",
-        description: "Software designed around the way your team already works, so nothing gets lost.",
-        icon: "blocks",
-      },
-      {
-        title: "Web Applications",
-        description: "Fast, secure applications your team and customers use from any browser.",
-        icon: "app-window",
-      },
-      {
-        title: "Desktop & Mobile Apps",
-        description: "Reliable apps for Windows, macOS, iOS and Android, built from one plan.",
-        icon: "monitor-smartphone",
-      },
-      {
-        title: "SaaS Products",
-        description: "Subscription products with accounts, billing and dashboards, ready to grow.",
-        icon: "cloud",
-      },
-      {
-        title: "Business Systems (CRM, ERP, POS)",
-        description: "One connected system for customers, operations and sales.",
-        icon: "database",
-      },
-      {
-        title: "Management Systems",
-        description:
-          "Inventory, billing and accounting, employee and appointment management in one place.",
-        icon: "layout-grid",
-      },
-    ],
-  },
-  {
-    id: "ai",
-    index: "02",
-    title: "AI & Automation",
-    shortTitle: "AI & Automation",
-    icon: "bot",
-    summary: "AI agents and workflows that take repetitive work off your team.",
-    intro: "Let software handle the repetitive work, so your people can focus on customers.",
-    highlights: [
-      "AI agents and chatbots",
-      "AI voice agents",
-      "WhatsApp and email automation",
-      "n8n workflows",
-    ],
-    services: [
-      {
-        title: "AI Agents & Chatbots",
-        description: "Assistants that answer questions and complete tasks, day and night.",
-        icon: "bot",
-      },
-      {
-        title: "AI Voice Agents",
-        description: "Voice agents that answer calls, qualify leads and book appointments.",
-        icon: "mic",
-      },
-      {
-        title: "WhatsApp & Email Automation",
-        description: "Automatic replies, reminders and updates on the channels your customers use.",
-        icon: "message-circle",
-      },
-      {
-        title: "Customer Support Automation",
-        description: "Resolve common questions instantly and route the rest to the right person.",
-        icon: "headset",
-      },
-      {
-        title: "Lead Generation & Follow-ups",
-        description: "Capture every lead and follow up automatically until they reply.",
-        icon: "target",
-      },
-      {
-        title: "n8n Workflows & Appointment Booking Automation",
-        description: "Connect your tools and automate bookings, confirmations and reminders.",
-        icon: "workflow",
-      },
-    ],
-  },
-  {
-    id: "web",
-    index: "03",
-    title: "Web & Digital Solutions",
-    shortTitle: "Web",
-    icon: "globe",
-    summary: "Fast, clear websites that turn visitors into customers.",
-    intro: "Websites that load fast, read clearly and turn visitors into customers.",
-    highlights: [
-      "Business websites",
-      "E-commerce websites",
-      "Landing pages",
-      "Booking websites",
-    ],
-    services: [
-      {
-        title: "Business & Corporate Websites",
-        description: "A credible, fast website that explains what you do in seconds.",
-        icon: "globe",
-      },
-      {
-        title: "E-commerce Websites",
-        description: "Online stores with a smooth checkout, secure payments and stock sync.",
-        icon: "shopping-bag",
-      },
-      {
-        title: "Landing Pages & Portfolios",
-        description: "Focused pages that move one audience towards one clear action.",
-        icon: "layout-template",
-      },
-      {
-        title: "Marketplaces & Web Portals",
-        description: "Multi-vendor platforms and portals with accounts and permissions.",
-        icon: "store",
-      },
-      {
-        title: "Booking & Reservation Websites",
-        description: "Live availability, booking and payment in one simple flow.",
-        icon: "calendar-check",
-      },
-      {
-        title: "Website Redesign & Maintenance",
-        description: "Modernise an existing site and keep it fast, secure and up to date.",
-        icon: "refresh-cw",
-      },
-    ],
-  },
-];
-
-export const workPage = {
-  metaTitle: "Work",
-  metaDescription:
-    "Software, AI automation and web projects by Betteflow, each built around one clear business result.",
-  label: "Work",
-  title: ["Selected work."],
-  intro: "Software, AI and web projects, each built around one clear business result.",
-  filterLabel: "Filter projects by category",
-  allLabel: "All",
-  emptyTitle: "No projects in this category yet.",
-  emptyText: "Tell us about yours and it could be the first.",
-  emptyCta: { label: "Start a project", href: "/contact" },
-  sampleTag: "Sample",
-  resultLabel: "Result",
-  countLabel: (count: number, filter: string) =>
-    `Showing ${count} ${count === 1 ? "project" : "projects"}${filter ? ` in ${filter}` : ""}`,
+export const serviceDetail = {
+  backLabel: "All services",
+  ofLabel: "of",
+  provideTitle: "What we provide",
+  deliverTitle: "How we deliver",
+  stackTitle: "Technologies we use",
+  getTitle: "What you get",
+  fitTitle: "A good fit if",
+  timelineLabel: "Typical timeline",
+  onThisPage: "On this page",
+  ctaTitle: (service: string) => `Ready to talk about ${service.toLowerCase()}?`,
+  ctaText: "Tell us what you're planning. We'll help you figure out the right way forward.",
+  ctaLabel: "Discuss Your Project",
+  previousLabel: "Previous",
+  nextLabel: "Next",
 } as const;
 
 export const projectPage = {
-  backLabel: "All work",
+  backLabel: "Selected work",
+  demoNote: "This is a demo concept that shows the kind of solution we build.",
+  overviewTitle: "Overview",
+  challengeTitle: "The challenge",
+  solutionTitle: "What we built",
+  featuresTitle: "Key features",
+  stackTitle: "Technology",
   categoryLabel: "Category",
-  scopeLabel: "Scope",
-  yearLabel: "Year",
-  problemLabel: "The problem",
-  builtLabel: "What we built",
-  resultLabel: "The result",
   nextLabel: "Next project",
-  sampleNote:
-    "This is a sample case study that shows the format. Replace it with a real project in content/projects.ts.",
+  ctaLabel: "Build something similar",
 } as const;
 
 export const contactPage = {
   metaTitle: "Contact",
-  metaDescription:
-    "Tell us about your project. Betteflow replies within 24 hours on working days.",
-  label: "Contact",
-  title: ["Tell us about", "your project."],
-  intro: "A few lines are enough. We will reply with questions, a rough plan and next steps.",
-  detailsTitle: "Prefer to talk directly?",
+  metaDescription: "Tell NOVARY® about your project. We reply within one business day.",
+  eyebrow: "Let's talk",
+  title: ["Tell Us What", "You're Planning."],
+  intro: "Share a few details about your idea. We'll help you figure out the right way forward.",
+  detailsTitle: "Get in touch",
   emailLabel: "Email",
-  whatsappLabel: "WhatsApp",
-  whatsappButton: "Message us on WhatsApp",
-  hoursLabel: "Working hours",
+  locationLabel: "Studio",
   responseLabel: "Response time",
+  followLabel: "Follow us",
+  nextTitle: "What happens next",
+  nextSteps: [
+    "We read your message and reply within one business day.",
+    "A short call to understand your goals and requirements.",
+    "A clear proposal with approach, timeline and cost.",
+  ],
   form: {
-    nameLabel: "Name",
-    emailLabel: "Email",
+    nameLabel: "Your name",
+    emailLabel: "Email address",
     phoneLabel: "Phone",
     optional: "Optional",
-    serviceLabel: "Service",
+    serviceLabel: "What do you need?",
     servicePlaceholder: "Choose a service",
-    messageLabel: "Message",
-    messagePlaceholder: "What do you need, and what result are you after?",
-    submit: "Send message",
+    otherService: "Something else",
+    messageLabel: "Tell us about your project",
+    messagePlaceholder: "What are you planning, and what would success look like?",
+    submit: "Send Message",
     sending: "Sending",
-    errorSummary: (count: number) =>
-      `Please fix ${count} ${count === 1 ? "field" : "fields"} before sending.`,
     successTitle: "Thank you. Your message is on its way.",
-    successText: "We have sent a confirmation to your inbox and will reply within 24 hours on working days.",
+    successText: "We'll read it carefully and reply within one business day.",
     successAgain: "Send another message",
     failureTitle: "Your message could not be sent.",
-    failureText: "Nothing you typed has been lost. Please try again, or email us directly.",
-    retry: "Try again",
-    rateLimited: "You have sent several messages in a short time. Please wait a few minutes and try again.",
+    failureText: "Please try again in a moment, or email us directly.",
     notConfigured:
-      "Email sending is not set up yet. Add RESEND_API_KEY, CONTACT_TO_EMAIL and CONTACT_FROM_EMAIL to .env.local.",
+      "Email is not set up yet. Add RESEND_API_KEY, CONTACT_TO_EMAIL and CONTACT_FROM_EMAIL to .env.local (see README.md).",
+    rateLimited: "You've sent a few messages already. Please wait a few minutes and try again.",
+    retry: "Try again",
+    errorSummary: (count: number) =>
+      count === 1 ? "There is 1 problem with the form." : `There are ${count} problems with the form.`,
   },
+} as const;
+
+export const footer = {
+  statement: "Technology should make things simpler. We build solutions that make it happen.",
+  exploreTitle: "Explore",
+  servicesTitle: "What We Do",
+  /** Service slugs listed in the footer. */
+  services: [
+    "software-development",
+    "ai-solutions",
+    "business-automation",
+    "website-development",
+    "mobile-app-development",
+  ],
+  contactTitle: "Get In Touch",
+  followTitle: "Follow Us",
+  rights: "All rights reserved.",
+  signoff: "Built with purpose. Designed for what's next.",
+  backToTop: "Back to top",
 } as const;
 
 export const notFoundPage = {
   metaTitle: "Page not found",
-  label: "Error 404",
-  title: "This page does not exist.",
-  text: "The link may be broken or the page may have moved.",
-  home: { label: "Back to home", href: "/" },
-  contact: { label: "Contact us", href: "/contact" },
-} as const;
-
-export const footer = {
-  statement: "Software, AI and web for business.",
-  navLabel: "Footer",
-  emailLabel: "Email",
-  whatsappLabel: "WhatsApp",
-  backToTop: "Back to top",
-  rights: "All rights reserved.",
+  eyebrow: "Error 404",
+  title: "This page took a different path.",
+  text: "The page you're looking for doesn't exist or has moved.",
+  home: { label: "Back to Home", href: "/" },
+  contact: { label: "Contact Us", href: "/contact" },
 } as const;

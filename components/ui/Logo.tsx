@@ -1,25 +1,29 @@
-import { cn } from "@/lib/cn";
 import { site } from "@/content/site";
+import { cn } from "@/lib/cn";
 
 /**
- * The Betteflow mark: a geometric B built from a stem and two half discs.
- * The same geometry is used, at large scale, in the home page hero.
+ * The NOVARY® mark: an N built from two violet blocks and a lime diagonal,
+ * on a rounded square. Flat colour, so it works at any size.
  */
-export function BMark({ className }: { className?: string }) {
+export function NMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className={className} fill="currentColor">
-      <rect x="4" y="3" width="5" height="18" />
-      <path d="M9 3a4.5 4.5 0 0 1 0 9z" />
-      <path d="M9 11a5 5 0 0 1 0 10z" />
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" className={className}>
+      <rect width="32" height="32" rx="9" fill="#5B3DF5" />
+      <rect x="8" y="8" width="4.5" height="16" rx="1.2" fill="#FFFDF8" />
+      <rect x="19.5" y="8" width="4.5" height="16" rx="1.2" fill="#FFFDF8" />
+      <path d="M8 8h4.5L24 24h-4.5z" fill="#D4F36A" />
     </svg>
   );
 }
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-2", className)}>
-      <BMark className="size-5 shrink-0" />
-      <span className="text-[1.25rem] leading-none font-semibold tracking-[-0.045em]">{site.name}</span>
+    <span className={cn("inline-flex items-center gap-2.5", className)}>
+      <NMark className="size-8 shrink-0" />
+      <span className="font-display text-[1.375rem] leading-none font-extrabold tracking-[-0.04em]">
+        {site.name}
+        <sup className="ml-0.5 align-super text-[0.55em] font-semibold">{site.mark}</sup>
+      </span>
     </span>
   );
 }

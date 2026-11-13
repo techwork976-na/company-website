@@ -13,7 +13,7 @@ export function BackToTop({ label }: { label: string }) {
         scrollToY(0);
         document.getElementById("main-content")?.focus({ preventScroll: true });
       }}
-      className="group inline-flex min-h-11 items-center gap-1.5 text-[0.9375rem] font-medium text-surface"
+      className="group inline-flex min-h-11 items-center gap-1.5 font-semibold text-fg"
     >
       <span className="link-slide link-slide-group">{label}</span>
       <ArrowUp

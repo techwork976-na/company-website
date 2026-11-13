@@ -7,10 +7,6 @@ export function absoluteUrl(path = "/") {
   return `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-export function whatsappUrl(message: string = site.contact.whatsappMessage) {
-  return `https://wa.me/${site.contact.whatsappNumber}?text=${encodeURIComponent(message)}`;
-}
-
 export function mailtoUrl(subject?: string) {
   return `mailto:${site.contact.email}${subject ? `?subject=${encodeURIComponent(subject)}` : ""}`;
 }

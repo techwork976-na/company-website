@@ -1,5 +1,5 @@
 {
-  "name": "betteflow",
+  "name": "novary",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,6 +20,7 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "resend": "^6.37.0",
+    "simple-icons": "^16.37.0",
     "tailwind-merge": "^3.7.0",
     "zod": "^4.6.7"
   },

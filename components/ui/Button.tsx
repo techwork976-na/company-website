@@ -1,66 +1,86 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import type { ButtonHTMLAttributes, ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "dark" | "secondary" | "inverse";
-/** "fluid" keeps the same minimum height but lets a long label wrap on small screens. */
-type Size = "md" | "sm" | "fluid";
+type Variant = "accent" | "solid" | "outline";
+type Size = "md" | "sm";
+type Arrow = "up-right" | "down" | "none";
 
 const base =
-  "group relative inline-flex select-none items-center justify-center gap-2 rounded-full text-[0.9375rem] font-medium transition-[background-color,border-color,color,box-shadow,scale] duration-[var(--dur-fast)] ease-brand active:scale-[0.98]";
+  "group relative inline-flex select-none items-center justify-center gap-3 rounded-full font-semibold tracking-[-0.01em] transition-[background-color,border-color,color,scale] duration-[var(--dur-fast)] ease-brand active:scale-[0.98]";
 
 const sizes: Record<Size, string> = {
-  md: "h-12 whitespace-nowrap px-6",
-  sm: "h-11 whitespace-nowrap px-5",
-  fluid: "min-h-12 px-6 py-3 text-center",
+  md: "h-14 pl-7 pr-2 text-[1rem]",
+  sm: "h-11 pl-5 pr-1.5 text-[0.9375rem]",
 };
 
+/** Colours come from the current journey tone, so a button fits any section. */
 const variants: Record<Variant, string> = {
-  /** Gold: the one main action on a screen. */
-  primary: "bg-accent text-ink shadow-button hover:bg-accent-hover",
-  /** Jet Black: strong action where gold is already in use nearby. */
-  dark: "bg-ink text-surface hover:bg-ink2",
-  secondary: "border border-line-strong bg-bg text-ink hover:border-ink hover:bg-surface",
-  /** Outline for dark bands. */
-  inverse: "border border-line-inverse-strong text-surface hover:border-surface hover:bg-surface/10",
+  accent: "bg-accent text-on-accent hover:bg-[color-mix(in_srgb,var(--c-accent)_86%,var(--c-fg))]",
+  solid: "bg-fg text-canvas hover:bg-[color-mix(in_srgb,var(--c-fg)_86%,var(--c-bg))]",
+  outline: "border-[1.5px] border-line-strong text-fg hover:border-fg",
 };
 
-export function buttonClasses(variant: Variant = "primary", size: Size = "md", className?: string) {
+/** The small round badge that carries the arrow. */
+const badges: Record<Variant, string> = {
+  accent: "bg-on-accent text-accent",
+  solid: "bg-canvas text-fg",
+  outline: "bg-fg text-canvas",
+};
+
+const badgeSizes: Record<Size, string> = { md: "size-10", sm: "size-8" };
+
+export function buttonClasses(variant: Variant = "accent", size: Size = "md", className?: string) {
   return cn(base, sizes[size], variants[variant], className);
 }
 
-function Arrow() {
+function ArrowBadge({ arrow, variant, size }: { arrow: Arrow; variant: Variant; size: Size }) {
+  if (arrow === "none") return null;
+  const Icon = arrow === "down" ? ArrowDown : ArrowUpRight;
   return (
-    <ArrowRight
+    <span
       aria-hidden="true"
-      strokeWidth={1.75}
-      className="size-4 shrink-0 transition-transform duration-[var(--dur-fast)] ease-brand group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5"
-    />
+      className={cn(
+        "flex shrink-0 items-center justify-center overflow-hidden rounded-full",
+        badges[variant],
+        badgeSizes[size],
+      )}
+    >
+      <Icon
+        strokeWidth={2}
+        className={cn(
+          "size-[1.0625rem] transition-transform duration-[var(--dur-slow)] ease-brand",
+          arrow === "down"
+            ? "group-hover:translate-y-0.5 group-focus-visible:translate-y-0.5"
+            : "group-hover:rotate-45 group-focus-visible:rotate-45",
+        )}
+      />
+    </span>
   );
 }
 
 type ButtonLinkProps = Omit<ComponentProps<typeof Link>, "className"> & {
   variant?: Variant;
   size?: Size;
-  arrow?: boolean;
+  arrow?: Arrow;
   className?: string;
   children: ReactNode;
 };
 
 /** A call to action rendered as a link. */
 export function ButtonLink({
-  variant = "primary",
+  variant = "accent",
   size = "md",
-  arrow = true,
+  arrow = "up-right",
   className,
   children,
   ...rest
 }: ButtonLinkProps) {
   return (
-    <Link className={buttonClasses(variant, size, className)} {...rest}>
+    <Link className={buttonClasses(variant, size, cn(arrow === "none" && "pr-7", className))} {...rest}>
       <span>{children}</span>
-      {arrow ? <Arrow /> : null}
+      <ArrowBadge arrow={arrow} variant={variant} size={size} />
     </Link>
   );
 }
@@ -68,22 +88,22 @@ export function ButtonLink({
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant;
   size?: Size;
-  arrow?: boolean;
+  arrow?: Arrow;
 };
 
 export function Button({
-  variant = "primary",
+  variant = "accent",
   size = "md",
-  arrow = true,
+  arrow = "up-right",
   className,
   children,
   type = "button",
   ...rest
 }: ButtonProps) {
   return (
-    <button type={type} className={buttonClasses(variant, size, className)} {...rest}>
+    <button type={type} className={buttonClasses(variant, size, cn(arrow === "none" && "pr-7", className))} {...rest}>
       <span>{children}</span>
-      {arrow ? <Arrow /> : null}
+      <ArrowBadge arrow={arrow} variant={variant} size={size} />
     </button>
   );
 }
