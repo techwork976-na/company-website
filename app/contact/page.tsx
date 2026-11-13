@@ -19,7 +19,7 @@ export const metadata: Metadata = pageMetadata({
 export default function ContactPage() {
   return (
     <PageTransition>
-      <section data-tone="lilac" aria-labelledby="contact-title" className="pt-12 pb-[var(--section-y)] md:pt-20">
+      <section aria-labelledby="contact-title" className="pt-12 pb-[var(--section-y)] md:pt-20">
         <div className="container-wide grid grid-cols-1 gap-x-10 gap-y-14 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <div className="hero-anim hero-rise" style={cssVars({ "--d": "0ms" })}>

@@ -40,7 +40,7 @@ export function About() {
     <section
       ref={sectionRef}
       id="about"
-      data-tone="indigo"
+     
       aria-labelledby="about-title"
       className="section-y relative overflow-hidden"
     >

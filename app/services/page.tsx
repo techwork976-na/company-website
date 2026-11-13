@@ -37,7 +37,7 @@ export default function ServicesPage() {
   return (
     <PageTransition>
       <div>
-        <section data-tone="paper" aria-labelledby="services-title" className="pt-12 pb-16 md:pt-20 lg:pb-24">
+        <section aria-labelledby="services-title" className="pt-12 pb-16 md:pt-20 lg:pb-24">
           <div className="container-wide grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
             <div className="lg:col-span-8">
               <div className="hero-anim hero-rise" style={cssVars({ "--d": "0ms" })}>
@@ -58,7 +58,7 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section data-tone="paper" aria-label={servicesPage.indexLabel} className="pb-[var(--section-y)]">
+        <section aria-label={servicesPage.indexLabel} className="pb-[var(--section-y)]">
           <div className="container-wide">
             <p className="eyebrow flex items-center justify-between border-b-2 border-fg pb-4 text-fg">
               <span>{servicesPage.indexLabel}</span>
@@ -116,7 +116,7 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section data-tone="indigo" aria-labelledby="engagement-title" className="section-y">
+        <section aria-labelledby="engagement-title" className="section-y">
           <div className="container-wide">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-7">

@@ -63,7 +63,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
   return (
     <PageTransition>
       <article aria-labelledby="service-title">
-        <header data-tone="paper" className="pt-8 pb-16 md:pt-12 lg:pb-24">
+        <header className="pt-8 pb-16 md:pt-12 lg:pb-24">
           <div className="container-wide">
             <ArrowLink href="/services" direction="left">
               {serviceDetail.backLabel}
@@ -115,7 +115,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         </header>
 
         {/* What we provide */}
-        <section data-tone="paper" aria-labelledby="provide-title" className="pb-[var(--section-y)]">
+        <section aria-labelledby="provide-title" className="pb-[var(--section-y)]">
           <div className="container-wide">
             <div className="grid grid-cols-1 gap-10 border-t border-line pt-12 lg:grid-cols-12 lg:gap-10 lg:pt-16">
               <SectionHeading id="provide-title" index="01" title={serviceDetail.provideTitle} />
@@ -138,7 +138,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         </section>
 
         {/* How we deliver */}
-        <section data-tone="indigo" aria-labelledby="deliver-title" className="section-y">
+        <section aria-labelledby="deliver-title" className="section-y">
           <div className="container-wide grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-10">
             <SectionHeading id="deliver-title" index="02" title={serviceDetail.deliverTitle} />
             <ol className="lg:col-span-8">
@@ -163,7 +163,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         </section>
 
         {/* Technologies, deliverables and fit */}
-        <section data-tone="paper" aria-labelledby="stack-title" className="section-y">
+        <section aria-labelledby="stack-title" className="section-y">
           <div className="container-wide grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-10">
             <SectionHeading id="stack-title" index="03" title={serviceDetail.stackTitle} />
             <div className="lg:col-span-8">
@@ -220,7 +220,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         </section>
 
         {/* Call to action and neighbours */}
-        <section data-tone="violet" aria-labelledby="service-cta-title" className="pt-[var(--section-y)] pb-10">
+        <section aria-labelledby="service-cta-title" className="pt-[var(--section-y)] pb-10">
           <div className="container-wide">
             <MaskedText
               id="service-cta-title"

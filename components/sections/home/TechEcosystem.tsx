@@ -63,7 +63,7 @@ export function TechEcosystem() {
   return (
     <section
       id="technology"
-      data-tone="paper"
+     
       aria-labelledby="tech-title"
       className="section-y relative overflow-hidden"
     >

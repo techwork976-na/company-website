@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <section data-tone="paper" className="relative overflow-hidden">
+    <section className="relative overflow-hidden">
       <div className="container-wide grid min-h-[calc(100svh-var(--nav-h))] grid-cols-1 content-center gap-y-10 py-16 lg:grid-cols-12 lg:gap-x-10">
         <p
           aria-hidden="true"

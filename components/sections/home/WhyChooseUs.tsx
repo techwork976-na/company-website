@@ -16,7 +16,7 @@ const steps = ["lg:ml-0", "lg:ml-[8%]", "lg:ml-[16%]", "lg:ml-[24%]", "lg:ml-[32
 export function WhyChooseUs() {
   const content = home.why;
   return (
-    <section id="difference" data-tone="lilac" aria-labelledby="why-title" className="section-y relative">
+    <section id="difference" aria-labelledby="why-title" className="section-y relative">
       <div className="container-wide">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-7">

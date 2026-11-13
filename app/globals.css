@@ -84,58 +84,15 @@
 }
 
 /* ==========================================================================
-   The journey: one canvas whose colour shifts as you scroll.
-   Each section declares data-tone. Without JavaScript every section simply
-   paints its own tone. With JavaScript, components/motion/ToneManager.tsx
-   sets <html data-journey data-tone="...">, and these registered properties
-   cross-fade, so neighbouring sections melt into each other.
+   Colour scopes
+   The page canvas is always warm paper. Elements that need their own
+   surface (mobile menu, contact card, footer) set data-tone-fixed, which
+   redefines these colour variables inside them; Tailwind exposes them as
+   bg-canvas, text-fg, text-fg-soft, border-line, bg-accent and so on.
    ========================================================================== */
 
-@property --c-bg {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #f4efe6;
-}
-@property --c-fg {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #16123f;
-}
-@property --c-soft {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #16123fb3;
-}
-@property --c-line {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #16123f24;
-}
-@property --c-line-strong {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #16123f4d;
-}
-@property --c-accent {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #5b3df5;
-}
-@property --c-on-accent {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #fffdf8;
-}
-@property --c-raise {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #fffdf8;
-}
-
 :root,
-[data-tone-fixed="paper"],
-html:not([data-journey]) [data-tone="paper"],
-html[data-journey][data-tone="paper"] {
+[data-tone-fixed="paper"] {
   --c-bg: #f4efe6;
   --c-fg: #16123f;
   --c-soft: color-mix(in srgb, #16123f 72%, transparent);
@@ -146,22 +103,7 @@ html[data-journey][data-tone="paper"] {
   --c-raise: #fffdf8;
 }
 
-[data-tone-fixed="lilac"],
-html:not([data-journey]) [data-tone="lilac"],
-html[data-journey][data-tone="lilac"] {
-  --c-bg: #e7e1ff;
-  --c-fg: #16123f;
-  --c-soft: color-mix(in srgb, #16123f 72%, transparent);
-  --c-line: color-mix(in srgb, #16123f 14%, transparent);
-  --c-line-strong: color-mix(in srgb, #16123f 30%, transparent);
-  --c-accent: #5b3df5;
-  --c-on-accent: #fffdf8;
-  --c-raise: #f7f4ff;
-}
-
-[data-tone-fixed="indigo"],
-html:not([data-journey]) [data-tone="indigo"],
-html[data-journey][data-tone="indigo"] {
+[data-tone-fixed="indigo"] {
   --c-bg: #1b1650;
   --c-fg: #f4efe6;
   --c-soft: color-mix(in srgb, #f4efe6 74%, transparent);
@@ -183,36 +125,6 @@ html[data-journey][data-tone="indigo"] {
   --c-raise: #1b1650;
 }
 
-[data-tone-fixed="violet"],
-html:not([data-journey]) [data-tone="violet"],
-html[data-journey][data-tone="violet"] {
-  --c-bg: #5b3df5;
-  --c-fg: #fffdf8;
-  --c-soft: color-mix(in srgb, #fffdf8 82%, transparent);
-  --c-line: color-mix(in srgb, #fffdf8 22%, transparent);
-  --c-line-strong: color-mix(in srgb, #fffdf8 44%, transparent);
-  --c-accent: #d4f36a;
-  --c-on-accent: #16123f;
-  --c-raise: #6a4ff7;
-}
-
-html[data-journey] {
-  transition:
-    --c-bg var(--dur-journey) var(--ease-brand),
-    --c-fg var(--dur-journey) var(--ease-brand),
-    --c-soft var(--dur-journey) var(--ease-brand),
-    --c-line var(--dur-journey) var(--ease-brand),
-    --c-line-strong var(--dur-journey) var(--ease-brand),
-    --c-accent var(--dur-journey) var(--ease-brand),
-    --c-on-accent var(--dur-journey) var(--ease-brand),
-    --c-raise var(--dur-journey) var(--ease-brand);
-}
-
-html[data-journey-instant] {
-  transition: none !important;
-}
-
-[data-tone],
 [data-tone-fixed] {
   background-color: var(--c-bg);
   color: var(--c-fg);
@@ -224,7 +136,6 @@ html[data-journey-instant] {
   --dur-base: 240ms;
   --dur-slow: 360ms;
   --dur-reveal: 600ms;
-  --dur-journey: 700ms;
   --stagger: 60ms;
   --rise: 24px;
 
@@ -575,7 +486,9 @@ html[data-journey-instant] {
 }
 
 /* ==========================================================================
-   Client dial: brand wordmarks on a slowly turning wheel.
+   Client dial: brand wordmarks on a very large wheel. The section pins
+   while scrolling turns the wheel one full rotation (GSAP ScrollTrigger,
+   see components/sections/home/ClientShowcase.tsx).
    Only the top of the wheel is visible, like a horizon.
    ========================================================================== */
 
@@ -610,7 +523,7 @@ html[data-journey-instant] {
   height: var(--dial);
   margin-left: calc(var(--dial) / -2);
   border-radius: 9999px;
-  animation: nv-spin 150s linear infinite;
+  will-change: transform;
 }
 
 .dial__ring {
@@ -653,11 +566,6 @@ html[data-journey-instant] {
   transition:
     background-color var(--dur-base) var(--ease-brand),
     color var(--dur-base) var(--ease-brand);
-}
-
-.dial:hover .dial__wheel,
-.dial[data-offscreen] .dial__wheel {
-  animation-play-state: paused;
 }
 
 @media (hover: hover) {
@@ -1120,10 +1028,6 @@ html[data-journey-instant] {
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  :root {
-    --dur-journey: 200ms;
-  }
-
   [data-reveal-ready] [data-reveal="rise"]:not([data-revealed]),
   [data-reveal-ready] [data-stagger]:not([data-revealed]) [data-reveal-item],
   [data-reveal-ready] [data-reveal="mask"]:not([data-revealed]) .mask-line > span {
@@ -1149,7 +1053,6 @@ html[data-journey-instant] {
     animation-delay: 0ms !important;
   }
 
-  .dial__wheel,
   .orbit__ring,
   .orbit__spin,
   .iso-float,

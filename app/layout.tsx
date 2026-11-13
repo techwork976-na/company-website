@@ -6,7 +6,6 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { RevealManager } from "@/components/motion/RevealManager";
-import { ToneManager } from "@/components/motion/ToneManager";
 import { jsonLdScript, organizationJsonLd } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 import { palette } from "@/lib/tokens";
@@ -71,7 +70,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SiteFooter />
         </MotionProvider>
         <RevealManager />
-        <ToneManager />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(organizationJsonLd()) }} />
       </body>
     </html>

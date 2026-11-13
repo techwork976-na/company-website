@@ -42,7 +42,7 @@ export function FeaturedProjects() {
   );
 
   return (
-    <section ref={sectionRef} id="work" data-tone="indigo" aria-labelledby="work-title" className="section-y relative">
+    <section ref={sectionRef} id="work" aria-labelledby="work-title" className="section-y relative">
       <div className="container-wide">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-8">

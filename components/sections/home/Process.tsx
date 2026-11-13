@@ -64,7 +64,7 @@ export function Process() {
     <section
       id="process"
       ref={sectionRef}
-      data-tone="paper"
+     
       aria-labelledby="process-title"
       className="process section-y"
     >

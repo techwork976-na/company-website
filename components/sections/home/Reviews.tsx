@@ -68,7 +68,7 @@ export function Reviews() {
   };
 
   return (
-    <section id="reviews" data-tone="lilac" aria-labelledby="reviews-title" className="section-y relative">
+    <section id="reviews" aria-labelledby="reviews-title" className="section-y relative">
       <div className="container-wide grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-[calc(var(--nav-h)+3rem)]">

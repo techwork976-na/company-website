@@ -77,7 +77,7 @@ components/
   layout/                header, mobile menu, footer, skip link, back to top
   mockups/               coded product visuals (WhatsApp inbox, voice agent, dashboard,
                          storefront, mobile app, workflow canvas)
-  motion/                ToneManager, RevealManager, Reveal, Stagger, MaskedText,
+  motion/                RevealManager, Reveal, Stagger, MaskedText,
                          PageTransition, MotionProvider
   sections/              page sections (home, contact)
   ui/                    Button, ArrowLink, Eyebrow, Logo, BrandMark
@@ -86,17 +86,15 @@ lib/                     tokens, class helper, lazy GSAP hook, service/project s
                          tech icons, SEO, email, validation, rate limit
 ```
 
-### The continuous journey
+### Colour
 
-The site is one canvas whose colour shifts as you scroll, so sections flow into each other instead of sitting in boxes. Each section declares a tone (`data-tone="paper" | "lilac" | "indigo" | "violet"`). `components/motion/ToneManager.tsx` watches a line across the middle of the viewport and sets the tone on `<html>`; the tone colours are registered CSS properties (`@property --c-bg`, `--c-fg`...) that cross-fade in 0.7s. Components use them as Tailwind colours: `bg-canvas`, `text-fg`, `text-fg-soft`, `border-line`, `bg-accent`, `text-on-accent`, `bg-raise`. Without JavaScript every section simply paints its own tone.
-
-Home page sequence: paper (hero, clients) → indigo (about, services) → lilac (why us) → paper (process) → indigo (projects) → paper (technology) → lilac (reviews) → violet (call to action) → deep indigo footer.
+The page canvas is always warm paper (`#F4EFE6`). Text and line colours come from CSS variables exposed as Tailwind colours (`bg-canvas`, `text-fg`, `text-fg-soft`, `border-line`, `bg-accent`, `text-on-accent`, `bg-raise`). Elements with their own surface (the mobile menu, the contact details card and the footer) set `data-tone-fixed="indigo" | "deep"`, which redefines those variables inside them. Project panels and mockups carry their own colours.
 
 ### Design tokens
 
 Defined once in `app/globals.css` (`@theme`) and mirrored in `lib/tokens.ts` for generated images and emails.
 
-- **Palette:** paper `#F4EFE6`, lilac `#E7E1FF`, ink `#16123F`, indigo `#1B1650`, violet `#5B3DF5`, coral `#FF6B4A`, lime `#D4F36A`, plus sun, sky, rose, emerald and periwinkle as service and project accents. Flat colour only: no gradients, glass, blur or gloss.
+- **Palette:** paper `#F4EFE6` (the canvas), ink `#16123F`, indigo `#1B1650`, violet `#5B3DF5`, coral `#FF6B4A`, lime `#D4F36A`, plus sun, sky, rose, emerald and periwinkle as service and project accents. Flat colour only: no gradients, glass, blur or gloss.
 - **Type:** Bricolage Grotesque for display, Geist for text, Geist Mono for numbers. Fluid sizes: `text-display`, `text-h1`–`text-h3`, `text-title`, `text-lead`, `text-body`, `text-small`, `text-label`.
 - **Class names:** build conditional classes with `cn()` from `lib/cn.ts`; register new text, radius or shadow tokens there too.
 
@@ -106,9 +104,9 @@ Smooth and controlled, one easing everywhere (`cubic-bezier(0.22, 1, 0.36, 1)`).
 
 - **Reveals** (`Reveal`, `Stagger`, `MaskedText`) render on the server with data attributes; a single `IntersectionObserver` in `RevealManager` reveals each once with CSS transitions. Content already on screen is never hidden.
 - **Hero:** pure CSS entrance; the isometric blocks (`IsoBlocks.tsx`, flat-shaded SVG with a true isometric projection) drop into place and two modules drift gently.
-- **Client dial:** a huge wheel of brand marks turning slowly (CSS), only its top arc visible; hover pauses it.
+- **Client dial:** a huge wheel of brand marks, only its top arc visible. GSAP ScrollTrigger pins the section when it reaches the middle of the screen and scrolling turns the dial one full rotation (1.5 viewport heights of scroll, `TURN_LENGTH` in `ClientShowcase.tsx`) before the page carries on.
 - **Framer Motion:** the navbar pill and the services index indicator (`layoutId`), and the services colour panel crossfade (`AnimatePresence`). Loaded lazily by `MotionProvider`.
-- **GSAP ScrollTrigger** (downloaded only near the section, via `lib/use-lazy-gsap.ts`): the About lines drifting sideways, the process track filling and its step counter, and the project panels easing back as the next one stacks over them.
+- **GSAP ScrollTrigger** (loaded on demand via `lib/use-lazy-gsap.ts`): the pinned client dial, the About lines drifting sideways, the process track filling and its step counter, and the project panels easing back as the next one stacks over them.
 - **Technology orbit:** three CSS rings at different speeds and directions, tiles counter-rotating to stay upright; the category list filters the orbit.
 - **Page transitions:** React `<ViewTransition>`; service titles morph from the index into the detail page.
 - `prefers-reduced-motion` turns off every continuous animation and scroll effect, leaving short fades.

@@ -27,7 +27,7 @@ export function FinalCta() {
   const content = home.finalCta;
   return (
     <section
-      data-tone="violet"
+     
       aria-labelledby="cta-title"
       className="relative overflow-hidden pt-[var(--section-y)] pb-12 md:pb-16"
     >

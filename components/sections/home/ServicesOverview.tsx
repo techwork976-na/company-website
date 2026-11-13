@@ -29,7 +29,7 @@ export function ServicesOverview() {
   const Icon = serviceIcons[service.icon];
 
   return (
-    <section id="services" data-tone="indigo" aria-labelledby="services-title" className="section-y relative">
+    <section id="services" aria-labelledby="services-title" className="section-y relative">
       <div className="container-wide">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-7">

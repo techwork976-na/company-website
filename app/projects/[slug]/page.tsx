@@ -50,7 +50,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
   return (
     <PageTransition>
       <article aria-labelledby="project-title">
-        <header data-tone="indigo" className="pt-8 pb-12 md:pt-12">
+        <header className="pt-8 pb-12 md:pt-12">
           <div className="container-wide">
             <ArrowLink href="/#work" direction="left">
               {projectPage.backLabel}
@@ -79,7 +79,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </div>
         </header>
 
-        <section data-tone="indigo" aria-label={project.title} className="pb-[var(--section-y)]">
+        <section aria-label={project.title} className="pb-[var(--section-y)]">
           <div className="container-wide">
             <div
               className={cn(
@@ -96,7 +96,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </div>
         </section>
 
-        <section data-tone="paper" aria-labelledby="story-title" className="section-y">
+        <section aria-labelledby="story-title" className="section-y">
           <h2 id="story-title" className="sr-only">
             {projectPage.overviewTitle}
           </h2>
@@ -152,7 +152,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </div>
         </section>
 
-        <section data-tone="violet" aria-label={projectPage.nextLabel}>
+        <section aria-label={projectPage.nextLabel}>
           <Link href={`/projects/${next.slug}`} className="group block py-16 md:py-24">
             <span className="container-wide flex items-end justify-between gap-6">
               <span>
