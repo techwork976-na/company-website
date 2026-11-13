@@ -47,7 +47,7 @@ NOVARY® is a demo brand. Replace these placeholders, all in `content/` unless n
 1. **Domain:** `NEXT_PUBLIC_SITE_URL` (and `site.url` in `content/site.ts`).
 2. **Email and location:** `site.contact`.
 3. **Social profiles:** `site.socials` currently point to the platforms' home pages.
-4. **Client brands:** `home.clients.brands` are invented names; their marks are drawn in `components/ui/BrandMark.tsx`.
+4. **Client brands:** `home.clients.brands` are invented names; their logos are drawn in `components/ui/BrandMark.tsx`.
 5. **Reviews:** `home.reviews.items` are demo reviews, labelled as such on the page. Replace them with real ones (and only ever show genuine reviews).
 6. **Projects:** `content/projects.ts` holds six demo concepts. Their pages are `noindex` and stay out of the sitemap.
 7. **Mockup figures:** numbers inside the coded mockups (`components/mockups/`) are illustrative.
@@ -104,9 +104,9 @@ Smooth and controlled, one easing everywhere (`cubic-bezier(0.22, 1, 0.36, 1)`).
 
 - **Reveals** (`Reveal`, `Stagger`, `MaskedText`) render on the server with data attributes; a single `IntersectionObserver` in `RevealManager` reveals each once with CSS transitions. Content already on screen is never hidden.
 - **Hero:** pure CSS entrance; the isometric blocks (`IsoBlocks.tsx`, flat-shaded SVG with a true isometric projection) drop into place and two modules drift gently.
-- **Client dial:** a huge wheel of brand marks, only its top arc visible. GSAP ScrollTrigger pins the section when it reaches the middle of the screen and scrolling turns the dial one full rotation (1.5 viewport heights of scroll, `TURN_LENGTH` in `ClientShowcase.tsx`) before the page carries on.
+- **Client showcase:** an accordion of solid-colour brand cards (`h-80`, about `w-36` each), each holding only its logo (`BrandLogo` in `components/ui/BrandMark.tsx`). On hover a card widens to about `w-72` while the others narrow, and its logo scales up slightly. Pure CSS, hover only; on small screens the cards sit in a swipeable row.
 - **Framer Motion:** the navbar pill and the services index indicator (`layoutId`), and the services colour panel crossfade (`AnimatePresence`). Loaded lazily by `MotionProvider`.
-- **GSAP ScrollTrigger** (loaded on demand via `lib/use-lazy-gsap.ts`): the pinned client dial, the About lines drifting sideways, the process track filling and its step counter, and the project panels easing back as the next one stacks over them.
+- **GSAP ScrollTrigger** (loaded on demand via `lib/use-lazy-gsap.ts`): the About lines drifting sideways, the process track filling and its step counter, and the project panels easing back as the next one stacks over them.
 - **Technology orbit:** three CSS rings at different speeds and directions, tiles counter-rotating to stay upright; the category list filters the orbit.
 - **Page transitions:** React `<ViewTransition>`; service titles morph from the index into the detail page.
 - `prefers-reduced-motion` turns off every continuous animation and scroll effect, leaving short fades.

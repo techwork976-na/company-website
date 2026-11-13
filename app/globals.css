@@ -486,97 +486,45 @@
 }
 
 /* ==========================================================================
-   Client dial: brand wordmarks on a very large wheel. The section pins
-   while scrolling turns the wheel one full rotation (GSAP ScrollTrigger,
-   see components/sections/home/ClientShowcase.tsx).
-   Only the top of the wheel is visible, like a horizon.
+   Client showcase: an accordion of brand cards (hover only, pure CSS).
+   Every card shares the row equally (about 9rem wide); the hovered card
+   grows to about 18rem and the others narrow, so the row never changes
+   width. Below 64rem the cards sit in a swipeable row at a fixed size.
    ========================================================================== */
 
-.dial {
-  --dial: 980px;
-  position: relative;
-  height: 15rem;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+.client-card {
+  transition: flex-grow 560ms var(--ease-brand);
 }
 
-@media (width >= 48rem) {
-  .dial {
-    --dial: 1400px;
-    height: 19rem;
+.client-card__logo {
+  transition: transform 560ms var(--ease-brand);
+}
+
+.client-cards-scroller {
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  /* Snapped cards keep the page gutter instead of touching the screen edge. */
+  scroll-padding-inline: var(--gutter);
+}
+
+.client-cards-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+@media (width >= 64rem) {
+  .client-card {
+    flex: 1 1 0;
   }
 }
 
-@media (width >= 80rem) {
-  .dial {
-    --dial: max(1700px, 118vw);
-    height: 22rem;
-  }
-}
-
-.dial__wheel {
-  position: absolute;
-  left: 50%;
-  top: 2.5rem;
-  width: var(--dial);
-  height: var(--dial);
-  margin-left: calc(var(--dial) / -2);
-  border-radius: 9999px;
-  will-change: transform;
-}
-
-.dial__ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  border: 1px solid var(--c-line-strong);
-}
-
-.dial__ring--inner {
-  inset: 7rem;
-  border-color: var(--c-line);
-}
-
-/* Fine tick marks around the rim, like a precision dial. */
-.dial__ticks {
-  position: absolute;
-  inset: 5.25rem;
-  border-radius: 9999px;
-  background: repeating-conic-gradient(var(--c-line-strong) 0 0.12deg, transparent 0.12deg 1.5deg);
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 10px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 10px));
-}
-
-.dial__item {
-  position: absolute;
-  left: 50%;
-  top: 1.75rem;
-  transform-origin: 50% calc(var(--dial) / 2 - 1.75rem);
-  transform: translateX(-50%) rotate(calc(var(--i) * 360deg / var(--n)));
-}
-
-.dial__brand {
-  transition:
-    color var(--dur-base) var(--ease-brand),
-    transform var(--dur-slow) var(--ease-brand);
-}
-
-.dial__brand-mark {
-  transition:
-    background-color var(--dur-base) var(--ease-brand),
-    color var(--dur-base) var(--ease-brand);
-}
-
-@media (hover: hover) {
-  .dial__brand:hover {
-    transform: translate3d(0, -6px, 0);
+@media (width >= 64rem) and (hover: hover) {
+  .client-card:hover {
+    /* With the padding fixed, 2.63 shares make the hovered card about w-72 (288px) at full width, the others about w-34. */
+    flex-grow: 2.63;
   }
 
-  .dial__brand:hover .dial__brand-mark {
-    background-color: var(--brand);
-    border-color: var(--brand);
-    color: var(--brand-ink) !important;
+  .client-card:hover .client-card__logo {
+    transform: scale(1.18);
   }
 }
 

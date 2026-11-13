@@ -74,3 +74,59 @@ export function BrandMark({ name, className }: { name: string; className?: strin
     </svg>
   );
 }
+
+/* Typographic wordmarks for the full logos: a main word and an optional small-caps line. */
+const wordmarks: Record<string, { word: string; sub?: string; size: number }> = {
+  Nexora: { word: "Nexora", size: 24 },
+  "Vertex Labs": { word: "Vertex", sub: "LABS", size: 24 },
+  "Orbit Solutions": { word: "orbit", sub: "SOLUTIONS", size: 25 },
+  "Elevate Digital": { word: "Elevate", sub: "DIGITAL", size: 22 },
+  Cloudnest: { word: "cloudnest", size: 19 },
+  PixelCraft: { word: "PixelCraft", size: 18 },
+  "Flux Technologies": { word: "FLUX", sub: "TECHNOLOGIES", size: 26 },
+  "Beyond Commerce": { word: "Beyond", sub: "COMMERCE", size: 23 },
+};
+
+/**
+ * A complete demo logo: the geometric mark above a typographic wordmark,
+ * drawn as one SVG (120 x 120 units) so it scales cleanly and stays centred.
+ * Monochrome in currentColor, so it sits on any solid brand colour.
+ */
+export function BrandLogo({ name, className }: { name: string; className?: string }) {
+  const wordmark = wordmarks[name] ?? { word: name, size: 18 };
+  // Centre the stack vertically: mark (40) + gap + word + optional sub-line.
+  const stack = 40 + 12 + wordmark.size * 0.78 + (wordmark.sub ? 16 : 0);
+  const top = (120 - stack) / 2;
+  const baseline = top + 40 + 12 + wordmark.size * 0.78;
+  return (
+    <svg viewBox="0 0 120 120" role="img" aria-label={name} className={className} fill="currentColor">
+      <svg x="40" y={top} width="40" height="40" viewBox="0 0 24 24">
+        {marks[name]?.path}
+      </svg>
+      <text
+        x="60"
+        y={baseline}
+        textAnchor="middle"
+        fontSize={wordmark.size}
+        fontWeight={800}
+        letterSpacing={-0.04 * wordmark.size}
+        className="font-display"
+      >
+        {wordmark.word}
+      </text>
+      {wordmark.sub ? (
+        <text
+          x="60"
+          y={baseline + 15}
+          textAnchor="middle"
+          fontSize={8.5}
+          fontWeight={700}
+          letterSpacing={2.4}
+          className="font-sans"
+        >
+          {wordmark.sub}
+        </text>
+      ) : null}
+    </svg>
+  );
+}
